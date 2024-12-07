@@ -1,0 +1,78 @@
+<!-- pisos.html -->
+{% extends "base.html" %}
+
+{% block title %}Campus UTEC - Pisos{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home_user.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pisos.css') }}">
+{% endblock %}
+
+{% block navbar_links %}
+<nav class="navbar">
+    <a href="/home_user#intro" class="nav-link intituciones active">Instituciones</a>
+    <a href="/opiniones" class="nav-link opiniones">Opiniones</a>
+    <a href="/reportes_user" class="nav-link reportes">Reportes</a>
+    <div class="user-dropdown">
+        <button class="dropdown-toggle" onclick="toggleDropdown()">
+            Bienvenido&nbsp;<strong>{{ user_name }}!</strong>
+            <img src="{{ profile_image if profile_image else url_for('static', filename='img/uploads/default_profile.png') }}" 
+                 alt="{{ user_name or 'Usuario' }}" 
+                 class="profile-icon">
+            <img src="{{ url_for('static', filename='img/iconos/arrow.png') }}" alt="Flecha" class="arrow-icon">
+        </button>
+        <div id="dropdown-content" class="dropdown-content">
+            <div class="user-info">
+                <img src="{{ profile_image if profile_image else url_for('static', filename='img/uploads/default_profile.png') }}" 
+                     alt="{{ user_name or 'Usuario' }}" 
+                     class="avatar">
+                <div class="user-details">
+                    <p class="user-name">{{ user_name }}</p>
+                    <p class="user-email">{{ user_email }}</p>
+                </div>
+            </div>
+            <a href="{{ url_for('perfil') }}" class="dropdown-item">Perfil</a>
+            <a href="{{ url_for('reportes_user') }}" class="dropdown-item">Reportes</a>
+            <a href="{{ url_for('logout') }}" class="dropdown-item">Logout</a>
+        </div>
+    </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+<section class="instituciones-header">
+    <img src="{{ url_for('static', filename='img/uploads/' + institucion.logo.split('/')[-1]) }}" alt="{{ institucion.nombre }}" class="institucion-logo">
+</section>
+
+<section class="pisos-section">
+    <div class="back-button">
+        <a href="{{ url_for('home_user') }}#intro">
+            <img src="{{ url_for('static', filename='img/iconos/arrow-back.png') }}" alt="Volver" class="back-arrow"> 
+            <span>Ver otras instituciones</span>
+        </a>
+    </div>
+
+    {% for piso in pisos %}
+    <div class="piso-card" onclick="window.location.href='{{ url_for('plano_piso', id_piso=piso.id_piso) }}'">
+        <div class="piso-image" 
+            style="background-image: url('{{ url_for('static', filename='img/uploads/' + (piso['imagen'] if piso['imagen'] else 'default_image.png')) }}');">
+        </div>   
+        <p class="piso-text">{{ piso.nombre }}</p>
+    </div>
+    {% endfor %}
+    
+</section>
+
+
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+    function toggleDropdown() {
+        var dropdown = document.getElementById("dropdown-content");
+        dropdown.classList.toggle("show");
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}HeatSpots{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/opiniones_home.css') }}">
+
+{% endblock %}
+
+{% block navbar_links %}
+    <!-- Enlaces de Iniciar sesión y Registrarse solo en home -->
+    <div class="auth-links">
+        <!-- Enlace de Iniciar sesión (texto) -->
+        <a href="{{ url_for('login') }}" class="login-link">Iniciar sesión</a>
+
+        <!-- Botón de Registrarse -->
+        <a href="{{ url_for('register') }}" class="register-button">
+            <div class="register-background"></div>
+            <div class="register-text">Registrarse</div>
+        </a>
+    </div>
+{% endblock %}
+
+{% block content %}
+
+<section class="image-section">
+    <img src="{{ url_for('static', filename='img/armendariz.png') }}" alt="Campus UTEC" class="responsive-image">
+    <div class="image-text-overlay">
+        <h1 class="overlay-text-main">Mantente cálido, <br> sin importar donde estés</h1>  
+    </div>
+    <div class="image-text-overlay2">
+        <h1 class="overlay-text-secondary">HeatSpots</h1>      
+    </div>
+</section>
+
+<section class="intro-section">
+    <div class="intro-text">
+        <h2>Siempre a la temperatura perfecta</h2>
+        <p>¿Por qué pasar frío cuando puedes estar cómodo? HeatSpots te ayuda a elegir los mejores espacios en diversas instituciones para que puedas concentrarte, estudiar o relajarte sin preocuparte por el clima.</p>
+    </div>
+</section>
+
+<section class="instituciones">
+    <h3>Nuestras instituciones</h3>
+    <div class="instituciones-container">
+        {% for institucion in instituciones %}
+        <div class="institucion-card">
+            <div class="institucion-image" style="background-image: url('{{ url_for('static', filename='img/uploads/' + institucion.imagen_universidad.split('/')[-1]) }}');"></div>
+            <p class="institucion-text">{{ institucion.nombre }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="info-section">
+    <div class="info-container">
+        <div class="info-image" style="background-image: url('static/img/mage-6.png');"></div>
+        <div class="info-text">
+            <h3>Monitoreo en tiempo real</h3>
+            <p>Mantente al tanto de la temperatura y ocupación de los espacios en todo momento. Con HeatSpots, obtienes datos actualizados al instante, asegurándote de que siempre estés en un lugar cómodo y sin aglomeraciones. Ya sea que estés buscando una sala tranquila o un espacio de estudio con calefacción perfecta, HeatSpots te lo facilita.</p>
+        </div>
+    </div>
+</section>
+
+<section class="opiniones">
+    <h3>Opiniones de usuarios</h3>
+    <div class="carousel-container">
+        <div class="carousel-track" id="opinionesContainer">
+            <!-- Las opiniones serán cargadas dinámicamente aquí -->
+        </div>
+    </div>
+    <div class="carousel-controls">
+        <button class="carousel-button prev" onclick="moveCarousel(-1)">&#10094;</button>
+        <button class="carousel-button next" onclick="moveCarousel(1)">&#10095;</button>
+    </div>
+</section>
+
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/opiniones_home.js') }}"></script>
+{% endblock %}

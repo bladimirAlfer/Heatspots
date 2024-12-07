@@ -1,0 +1,61 @@
+{% extends 'base_admin.html' %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/usuarios_admin.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="usuarios-container">
+    <h2>Gestión de Usuarios</h2>
+    <div class="usuarios-table-container">
+        <table class="usuarios-table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Correo</th>
+                    <th>Teléfono</th>
+                    <th>Dirección</th>
+                    <th>Rol</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for usuario in usuarios %}
+                <tr>
+                    <td>{{ usuario.nombre }}</td>
+                    <td>{{ usuario.apellido }}</td>
+                    <td>{{ usuario.email }}</td>
+                    <td>{{ usuario.telefono or 'N/A' }}</td>
+                    <td>{{ usuario.direccion or 'N/A' }}</td>
+                    <td>{{ usuario.rol }}</td>
+                    <td>
+                        <img src="{{ url_for('static', filename='img/iconos/delete.png') }}" alt="Eliminar" 
+                             class="action-icon" 
+                             onclick="openEliminarModal('{{ usuario.email }}')">
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal para eliminar usuario -->
+    <div id="eliminarUsuarioModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('eliminarUsuarioModal')">&times;</span>
+            <h3>Eliminar Usuario</h3>
+            <p>¿Estás seguro de que deseas eliminar este usuario?</p>
+            <form id="eliminarUsuarioForm" action="{{ url_for('eliminar_usuario') }}" method="POST">
+                <input type="hidden" id="delete_user_email" name="email">
+                <button type="submit" class="btn">Eliminar</button>
+                <button type="button" class="btn-cancelar" onclick="closeModal('eliminarUsuarioModal')">Cancelar</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/usuarios_admin.js') }}"></script>
+{% endblock %}

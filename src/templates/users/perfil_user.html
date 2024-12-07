@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}Perfil - HeatSpots{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home_user.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/perfil.css') }}">
+    {% endblock %}
+
+
+{% block navbar_links %}
+<nav class="navbar">
+    <a href="/home_user#intro" class="nav-link intituciones active">Instituciones</a>
+    <a href="/opiniones" class="nav-link opiniones">Opiniones</a>
+    <a href="/reportes_user" class="nav-link reportes">Reportes</a>
+    <div class="user-dropdown">
+        <button class="dropdown-toggle" onclick="toggleDropdown()">
+            Bienvenido&nbsp;<strong>{{ user_name }}!</strong>
+            <img src="{{ profile_image if profile_image else url_for('static', filename='img/uploads/default_profile.png') }}" 
+                 alt="{{ user_name or 'Usuario' }}" 
+                 class="profile-icon">
+            <img src="{{ url_for('static', filename='img/iconos/arrow.png') }}" alt="Flecha" class="arrow-icon">
+        </button>
+        <div id="dropdown-content" class="dropdown-content">
+            <div class="user-info">
+                <img src="{{ profile_image if profile_image else url_for('static', filename='img/uploads/default_profile.png') }}" 
+                     alt="{{ user_name or 'Usuario' }}" 
+                     class="avatar">
+                <div class="user-details">
+                    <p class="user-name">{{ user_name }}</p>
+                    <p class="user-email">{{ user_email }}</p>
+                </div>
+            </div>
+            <a href="{{ url_for('perfil') }}" class="dropdown-item">Perfil</a>
+            <a href="{{ url_for('reportes_user') }}" class="dropdown-item">Reportes</a>
+            <a href="{{ url_for('logout') }}" class="dropdown-item">Logout</a>
+        </div>
+    </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+<section class="perfil-section">
+    <div class="perfil-container">
+        <div class="perfil-card">
+            <!-- Si profile_image es None, usa la imagen por defecto -->
+            <img src="{{ profile_image if profile_image else url_for('static', filename='img/uploads/default_profile.png') }}" alt="{{ user_name or 'Usuario' }} {{ last_name or '' }}" class="perfil-image">
+            <h3 class="perfil-name">{{ user_name or 'Usuario' }} {{ last_name or '' }}</h3>
+        </div>
+
+        <div class="perfil-info">
+            <form action="{{ url_for('perfil') }}" method="POST" class="perfil-form" enctype="multipart/form-data">
+                <label for="full-name">Nombre</label>
+                <input type="text" id="full-name" name="full_name" value="{{ user_name or '' }}" placeholder="Tu nombre">
+        
+                <label for="last-name">Apellido</label>
+                <input type="text" id="last-name" name="last_name" value="{{ last_name or '' }}" placeholder="Tu apellido">
+        
+                <label for="about">Acerca de ti</label>
+                <textarea id="about" name="about">{{ about or '' }}</textarea> 
+        
+                <label for="empresa">Empresa</label>
+                <input type="text" id="empresa" name="empresa" value="{{ empresa or '' }}" placeholder="Tu empresa">
+        
+                <label for="phone">Teléfono</label>
+                <input type="tel" id="phone" name="phone" value="{{ phone or '' }}" placeholder="Número de teléfono">
+        
+                <label for="address">Dirección</label>
+                <input type="text" id="address" name="address" value="{{ address or '' }}" placeholder="Dirección">
+        
+                <label for="profile_image">Subir nueva imagen de perfil (JPG/PNG)</label>
+                <input type="file" id="profile_image" name="profile_image" accept="image/*">
+        
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" value="{{ user_email }}" readonly>
+        
+                <button type="submit" class="save-button">Guardar</button>
+            </form>
+        </div>
+        
+    </div>
+</section>
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+    function toggleDropdown() {
+        var dropdown = document.getElementById("dropdown-content");
+        dropdown.classList.toggle("show");
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&family=Baloo+2:wght@700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}HeatSpots{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    {% block styles %}{% endblock %}
+</head>
+<body>
+
+
+    <header>
+        <div class="header">
+            <!-- Logo HeatSpots -->
+            <!-- Aquí se verifica si el usuario está logueado -->
+            {% if session.get('user') %}
+                <a href="{{ url_for('home_user') }}" class="title">HeatSpots</a>
+            {% else %}
+                <a href="{{ url_for('home') }}" class="title">HeatSpots</a>
+            {% endif %}
+
+            <!-- Bloque para agregar contenido al navbar (Iniciar sesión, registrarse, dropdown, etc.) -->
+            {% block navbar_links %}
+            {% endblock %}
+        </div>
+    </header>
+
+    <!-- Aquí va el contenido de cada página -->
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Footer (excluido de login, register, reset_password) -->
+    {% if request.endpoint not in ['login', 'register', 'reset_password'] %}
+    <footer class="site-footer">
+        <div class="footer-content">
+            <h1 class="footer-logo">HeatSpots</h1>
+        </div>
+    </footer>
+    {% endif %}
+
+    {% block scripts %}{% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,119 @@
+{% extends 'base_admin.html' %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pisosadmin.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="piso-container">
+    <h2>Pisos</h2>
+    <button class="btn-nuevo" onclick="openAgregarPiso()">Nuevo</button>
+
+    <table class="pisos-table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Institución</th>
+                <th>Imagen</th>
+                <th>Plano</th> <!-- Nueva columna -->
+                <th>Sensores Activos</th>
+                <th>Reportes Activos</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for piso in pisos %}
+            <tr>
+                <td>{{ piso.nombre }}</td>
+                <td>{{ piso.institucion }}</td>
+                <td>
+                    <img src="{{ url_for('static', filename='img/uploads/' + piso.imagen.split('/')[-1]) }}" alt="Imagen" class="imagen-piso">
+                </td>
+                <td>
+                    {% if piso.plano %}
+                        <img src="{{ url_for('static', filename='img/uploads/' + piso.plano.split('/')[-1]) }}" alt="Plano" class="imagen-plano">
+                    {% else %}
+                        <p>No disponible</p>  <!-- Muestra un mensaje o imagen genérica -->
+                    {% endif %}
+                </td>
+                
+                <td>{{ piso.sensores_activos }}</td>
+                <td>{{ piso.reportes_activos }}</td>
+                <td>
+                    <img src="{{ url_for('static', filename='img/iconos/edit.png') }}" alt="Editar" class="action-icon" onclick="openEditarPiso('{{ piso.id_piso }}')">
+                    <img src="{{ url_for('static', filename='img/iconos/delete.png') }}" alt="Eliminar" class="action-icon" onclick="openEliminarPiso('{{ piso.id_piso }}')">
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Modal para agregar piso -->
+    <div id="agregarPisoModal" class="modal">
+        <div class="modal-content">
+            <h3>Agregar Piso</h3>
+            <form action="{{ url_for('agregar_piso') }}" method="POST" enctype="multipart/form-data">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre" required>
+
+                <label for="id_institucion">Institución</label>
+                <select id="id_institucion" name="id_institucion" required>
+                    {% for institucion in instituciones %}
+                        <option value="{{ institucion.id_institucion }}">{{ institucion.nombre }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="imagen">Imagen</label>
+                <input type="file" id="imagen" name="imagen" required>
+                <label for="plano">Plano</label>
+                <input type="file" id="plano" name="plano">
+                <button type="submit" class="btn">Registrar</button>
+                <button type="button" class="btn-cancelar" onclick="closeModal('agregarPisoModal')">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para editar piso -->
+    <div id="editarPisoModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('editarPisoModal')">&times;</span>
+            <h2>Editar Piso</h2>
+            <form id="editarPisoForm" action="{{ url_for('editar_piso') }}" method="POST" enctype="multipart/form-data">
+                <input type="hidden" id="edit_id_piso" name="id_piso">
+                <label for="edit_nombre">Nombre:</label>
+                <input type="text" id="edit_nombre" name="nombre" required>
+                <label for="edit_id_institucion">Institución:</label>
+                <select id="edit_id_institucion" name="id_institucion" required>
+                    {% for institucion in instituciones %}
+                        <option value="{{ institucion.id_institucion }}">{{ institucion.nombre }}</option>
+                    {% endfor %}
+                </select>
+                <label for="edit_imagen">Imagen:</label>
+                <input type="file" id="edit_imagen" name="imagen">
+                <label for="edit_plano">Plano</label>
+                <input type="file" id="edit_plano" name="plano">
+                <button type="submit">Guardar cambios</button>
+                <button type="button" class="btn-cancelar" onclick="closeModal('agregarPisoModal')">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para eliminar piso -->
+    <div id="eliminarPisoModal" class="modal">
+        <div class="modal-content">
+            <h3>Eliminar</h3>
+            <p>¿Estás seguro que deseas eliminar este piso?</p>
+            <form id="eliminarPisoForm" action="{{ url_for('eliminar_piso') }}" method="POST">
+                <input type="hidden" id="delete_id_piso" name="id_piso">
+                <button type="submit" class="btn">Sí, estoy seguro</button>
+                <button type="button" class="btn-cancelar" onclick="closeModal('eliminarPisoModal')">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/pisos.js') }}"></script>
+{% endblock %}

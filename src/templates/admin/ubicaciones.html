@@ -1,0 +1,172 @@
+{% extends "base_admin.html" %}
+
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/ubicaciones.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="ubicacion-container">
+    <h2>Ubicaciones</h2>
+    <button class="btn-nuevo" onclick="openAgregarUbicacion()">Nueva Ubicación</button>
+    <div class="ubicaciones-table-container">
+        <table class="ubicaciones-table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Institución</th> <!-- Nueva columna para la institución -->
+                    <th>Piso</th>
+                    <th>Detalle</th>
+                    <th>Imagen</th>
+                    <th>Calefactores</th>
+                    <th>Sensores</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ubicacion in ubicaciones %}
+                <tr>
+                    <td>{{ ubicacion.nombre }}</td>
+                    <td>{{ ubicacion.institucion_nombre }}</td> <!-- Muestra el nombre de la institución -->
+                    <td>{{ ubicacion.piso_nombre }}</td>
+                    <td>{{ ubicacion.detalle }}</td>
+                    <td><img src="{{ url_for('static', filename='img/uploads/' + ubicacion.imagen_ubicacion.split('/')[-1]) }}" alt="Imagen Ubicación" class="imagen-ubicacion"></td>
+                    <td>{{ ubicacion.cantidad_calefactores }}</td>
+                    <td>{{ ubicacion.cantidad_sensores }}</td>
+                    <td>
+                        <img src="{{ url_for('static', filename='img/iconos/edit.png') }}" alt="Editar" class="action-icon" onclick="openEditarUbicacion('{{ ubicacion.id_ubicacion }}')">
+                        <img src="{{ url_for('static', filename='img/iconos/delete.png') }}" alt="Eliminar" class="action-icon" onclick="openEliminarUbicacion('{{ ubicacion.id_ubicacion }}')">
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+    <!-- Modal para agregar ubicación -->
+    <div id="agregarUbicacionModal" class="modal">
+        <div class="modal-content">
+            <h3>Agregar Ubicación</h3>
+            <form action="{{ url_for('agregar_ubicacion') }}" method="POST" enctype="multipart/form-data">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required>
+                <!-- Campo para seleccionar la institución -->
+                <label for="id_institucion">Institución:</label>
+                <select id="id_institucion" name="id_institucion" required onchange="filtrarPisosPorInstitucion()">
+                    <option value="" disabled selected>Seleccione una institución</option>
+                    {% for institucion in instituciones %}
+                        <option value="{{ institucion.id_institucion }}">{{ institucion.nombre }}</option>
+                    {% endfor %}
+                </select>            
+
+                <!-- Selección de Piso filtrado por institución -->
+                <label for="id_piso">Piso:</label>
+                <select id="id_piso" name="id_piso" required onchange="openPlanoModal()">
+                    <option value="">Seleccione un piso</option>
+                </select>
+
+                <input type="hidden" id="coordenadas" name="coordenadas"> <!-- Coordenadas seleccionadas -->
+
+                <label for="detalle">Detalle:</label>
+                <textarea id="detalle" name="detalle" required></textarea>
+
+                <label for="imagen_ubicacion">Imagen de la ubicación:</label>
+                <input type="file" id="imagen_ubicacion" name="imagen_ubicacion" required>
+
+                <button type="submit" class="btn">Guardar Ubicación</button>
+                <button type="button" class="btn-cancelar" onclick="closeModal('agregarUbicacionModal')">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para seleccionar coordenadas en el plano -->
+    <div id="planoModal" class="modal">
+        <div class="modal-content-plano">
+            <span class="close" onclick="closeModal('planoModal')">&times;</span>
+            <h3>Selecciona la ubicación en el plano</h3>
+            <div id="plano-container" style="position: relative;">
+                <img id="plano" src="" alt="Plano del Piso" class="imagen-plano" onclick="agregarMarcador(event)">
+            </div>
+            <button type="button" class="btn" onclick="guardarCoordenada()">Guardar coordenada</button>
+        </div>
+    </div>
+    
+
+<!-- Modal para editar ubicación -->
+    <div id="editarUbicacionModal" class="modal">
+        <div class="modal-content">
+            <h3>Editar Ubicación</h3>
+            <form id="editarUbicacionForm" action="{{ url_for('editar_ubicacion') }}" method="POST" enctype="multipart/form-data">
+                <input type="hidden" id="edit_id_ubicacion" name="id_ubicacion">
+
+                <label for="edit_nombre">Nombre:</label>
+                <input type="text" id="edit_nombre" name="nombre" required>
+
+                <!-- Campo para seleccionar la institución -->
+                <label for="id_institucion">Institución:</label>
+                <select id="edit_id_institucion" name="id_institucion" required onchange="filtrarPisosPorInstitucion('edit')">
+                    <option value="" disabled selected>Seleccione una institución</option>
+                    {% for institucion in instituciones %}
+                        <option value="{{ institucion.id_institucion }}">{{ institucion.nombre }}</option>
+                    {% endfor %}
+                </select>
+                
+                                
+                <!-- Selección de Piso filtrado por institución -->
+                <label for="edit_id_piso">Piso:</label>
+                <select id="edit_id_piso" name="id_piso" required onchange="openPlanoModalEdit()">
+                    <option value="">Seleccione un piso</option>
+                </select>                             
+
+                <label for="edit_detalle">Detalle:</label>
+                <textarea id="edit_detalle" name="detalle" required></textarea>
+
+                <label for="edit_imagen_ubicacion">Imagen de la ubicación:</label>
+                <input type="file" id="edit_imagen_ubicacion" name="imagen_ubicacion">
+
+                <input type="hidden" id="edit_coordenadas" name="coordenadas">
+
+                <button type="submit" class="btn">Guardar Cambios</button>
+                <button type="button" class="btn-cancelar" onclick="closeModal('editarUbicacionModal')">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Modal para seleccionar coordenadas en el plano al editar -->
+    <div id="planoModalEdit" class="modal">
+        <div class="modal-content-plano">
+            <span class="close" onclick="closeModal('planoModalEdit')">&times;</span>
+            <h3>Selecciona la nueva ubicación en el plano</h3>
+            <div id="plano-container-edit" style="position: relative;">
+                <img id="planoEdit" src="" alt="Plano del Piso" class="imagen-plano" onclick="agregarMarcadorEdit(event)">
+            </div>
+            <button type="button" class="btn" onclick="guardarCoordenadaEdit()">Guardar coordenada</button>
+        </div>
+    </div>
+    
+
+
+    <!-- Modal para eliminar ubicación -->
+    <div id="eliminarUbicacionModal" class="modal">
+        <!-- Confirmación para eliminar -->
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('eliminarUbicacionModal')">&times;</span>
+            <h3>Eliminar Ubicación</h3>
+            <p>¿Estás seguro de que deseas eliminar esta ubicación?</p>
+            <form id="eliminarUbicacionForm" action="{{ url_for('eliminar_ubicacion') }}" method="POST">
+                <input type="hidden" id="delete_id_ubicacion" name="id_ubicacion">
+                <button type="submit" class="btn">Eliminar</button>
+                <button type="button" class="btn-cancelar" onclick="closeModal('eliminarUbicacionModal')">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/ubicaciones.js') }}"></script>
+{% endblock %}
+

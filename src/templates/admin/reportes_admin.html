@@ -1,0 +1,78 @@
+{% extends 'base_admin.html' %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/reportes_admin.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="reporte-container">
+    <h2>Reportes</h2>
+    <div class="reportes-table-container">
+        <table class="reportes-table">
+            <thead>
+                <tr>
+                    <th>Calefactor</th>
+                    <th>Ubicación</th>
+                    <th>Institución</th>
+                    <th>Piso</th>
+                    <th>Tipo</th>
+                    <th>Comentario</th>
+                    <th>Estado</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reporte in reportes %}
+                <tr>
+                    <td>{{ reporte.calefactor }}</td>
+                    <td>{{ reporte.ubicacion }}</td>
+                    <td>{{ reporte.institucion }}</td>
+                    <td>{{ reporte.piso }}</td>
+                    <td>{{ reporte.tipo_reporte }}</td>
+                    <td>{{ reporte.comentario or 'N/A' }}</td>
+                    <td>
+                        <div class="estado-botones">
+                            <button class="btn-estado por-revisar {{ 'seleccionado' if reporte.estado == 'por revisar' else '' }}"
+                                    onclick="cambiarEstadoReporte('{{ reporte.id_reporte }}', 'por revisar')">
+                                <img src="{{ url_for('static', filename='img/iconos/open.png') }}" alt="Por Revisar" />
+                            </button>
+                            <button class="btn-estado en-revision {{ 'seleccionado' if reporte.estado == 'en revision' else '' }}"
+                                    onclick="cambiarEstadoReporte('{{ reporte.id_reporte }}', 'en revision')">
+                                <img src="{{ url_for('static', filename='img/iconos/review.png') }}" alt="En Revisión" />
+                            </button>
+                            <button class="btn-estado solucionado {{ 'seleccionado' if reporte.estado == 'solucionado' else '' }}"
+                                    onclick="cambiarEstadoReporte('{{ reporte.id_reporte }}', 'solucionado')">
+                                <img src="{{ url_for('static', filename='img/iconos/solved.png') }}" alt="Solucionado" />
+                            </button>
+                        </div>
+                    </td>                                      
+                    <td>
+                        <img src="{{ url_for('static', filename='img/iconos/delete.png') }}" alt="Eliminar" 
+                             class="action-icon" 
+                             onclick="openEliminarModal('{{ reporte.id_reporte }}')">
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+ 
+<!-- Modal para eliminar reporte -->
+<div id="eliminarReporteModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('eliminarReporteModal')">&times;</span>
+        <h3>Eliminar Reporte</h3>
+        <p>¿Estás seguro de que deseas eliminar este reporte?</p>
+        <form id="eliminarReporteForm" action="{{ url_for('eliminar_reporte') }}" method="POST">
+            <input type="hidden" id="delete_id_reporte" name="id_reporte">
+            <button type="submit" class="btn">Eliminar</button>
+            <button type="button" class="btn-cancelar" onclick="closeModal('eliminarReporteModal')">Cancelar</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/reportes_admin.js') }}"></script>
+{% endblock %}

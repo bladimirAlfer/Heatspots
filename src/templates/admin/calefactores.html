@@ -1,0 +1,155 @@
+{% extends 'base_admin.html' %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/calefactores.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="calefactor-container">
+    <h2>Calefactores</h2>
+    <button class="btn-nuevo" onclick="openAgregarCalefactor()">Nuevo Calefactor</button>
+    <div class="ubicaciones-table-container">
+        <table class="ubicaciones-table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Institución</th> <!-- Nueva columna para la institución -->
+                    <th>Piso</th>
+                    <th>Ubicación</th>
+                    <th>Estado</th>
+                    <th>Última Temp</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for calefactor in calefactores %}
+                <tr>
+                    <td>{{ calefactor.nombre }}</td>
+                    <td>{{ calefactor.institucion }}</td> <!-- Mostrar institución -->
+                    <td>{{ calefactor.piso }}</td>
+                    <td>{{ calefactor.ubicacion }}</td>
+                    <td>
+                        <div class="estado-botones">
+                            <!-- Botón Encendido -->
+                            <button class="btn-estado encendido {{ 'seleccionado' if calefactor.estado == 'encendido' else '' }}"
+                                    onclick="cambiarEstadoCalefactor('{{ calefactor.id_calefactor }}', 'encendido')">
+                                <img src="{{ url_for('static', filename='img/iconos/on.png') }}" alt="Encender" />
+                            </button>
+                    
+                            <!-- Botón Apagado -->
+                            <button class="btn-estado apagado {{ 'seleccionado' if calefactor.estado == 'apagado' else '' }}"
+                                    onclick="cambiarEstadoCalefactor('{{ calefactor.id_calefactor }}', 'apagado')">
+                                <img src="{{ url_for('static', filename='img/iconos/off.png') }}" alt="Apagar" />
+                            </button>
+                        </div>
+                    </td>                    
+                    <td>{{ calefactor.ultima_temp or 'N/A' }}</td>
+                    <td>
+                        <img src="{{ url_for('static', filename='img/iconos/edit.png') }}" alt="Editar" class="action-icon" onclick="openEditarCalefactor('{{ calefactor.id_calefactor }}')">
+                        <img src="{{ url_for('static', filename='img/iconos/delete.png') }}" alt="Eliminar" class="action-icon" onclick="openEliminarCalefactor('{{ calefactor.id_calefactor }}')">
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+<!-- Modal para agregar calefactor -->
+    <div id="agregarCalefactorModal" class="modal">
+        <div class="modal-content">
+            <h3>Agregar Calefactor</h3>
+            <form action="{{ url_for('agregar_calefactor') }}" method="POST">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre" required>
+
+                <!-- Selección de Institución -->
+                <label for="agregar_id_institucion">Institución</label>
+                <select id="agregar_id_institucion" name="id_institucion" required onchange="filtrarPisosPorInstitucion('agregar')">
+                    <option value="" disabled selected>Selecciona una institución</option>
+                    {% for institucion in instituciones %}
+                        <option value="{{ institucion.id_institucion }}">{{ institucion.nombre }}</option>
+                    {% endfor %}
+                </select>
+
+                <!-- Selección de Piso -->
+                <label for="agregar_id_piso">Piso</label>
+                <select id="agregar_id_piso" name="id_piso" required>
+                    <option value="">Selecciona un piso</option>
+                </select>
+
+                <!-- Selección de Ubicación -->
+                <label for="agregar_id_ubicacion">Ubicación</label>
+                <select id="agregar_id_ubicacion" name="id_ubicacion" required>
+                    <option value="">Selecciona una ubicación</option>
+                </select>
+
+                <label for="estado">Estado</label>
+                <select id="estado" name="estado" required>
+                    <option value="encendido">Encendido</option>
+                    <option value="apagado">Apagado</option>
+                </select>
+
+                <button type="submit" class="btn">Registrar</button>
+                <button type="button" class="btn-cancelar" onclick="closeModal('agregarCalefactorModal')">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para editar calefactor -->
+    <div id="editarCalefactorModal" class="modal">
+        <div class="modal-content">
+            <h3>Editar Calefactor</h3>
+            <form id="editarCalefactorForm" action="{{ url_for('editar_calefactor') }}" method="POST">
+                <input type="hidden" id="edit_id" name="id_calefactor">
+
+                <label for="edit_nombre">Nombre</label>
+                <input type="text" id="edit_nombre" name="nombre" required>
+
+                <!-- Selección de Institución -->
+                <label for="editar_id_institucion">Institución</label>
+                <select id="editar_id_institucion" name="id_institucion" required onchange="filtrarPisosPorInstitucion('editar')">
+                    <option value="" disabled selected>Selecciona una institución</option>
+                    {% for institucion in instituciones %}
+                        <option value="{{ institucion.id_institucion }}">{{ institucion.nombre }}</option>
+                    {% endfor %}
+                </select>
+
+                <!-- Selección de Piso -->
+                <label for="editar_id_piso">Piso</label>
+                <select id="editar_id_piso" name="id_piso" required>
+                    <option value="">Selecciona un piso</option>
+                </select>
+
+                <!-- Selección de Ubicación -->
+                <label for="editar_id_ubicacion">Ubicación</label>
+                <select id="editar_id_ubicacion" name="id_ubicacion" required>
+                    <option value="">Selecciona una ubicación</option>
+                </select>
+
+                <button type="submit" class="btn">Guardar cambios</button>
+                <button type="button" class="btn-cancelar" onclick="closeModal('editarCalefactorModal')">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
+
+
+    <!-- Modal para eliminar calefactor -->
+    <div id="eliminarCalefactorModal" class="modal">
+        <div class="modal-content">
+            <h3>Eliminar Calefactor</h3>
+            <p>¿Estás seguro que deseas eliminar este calefactor?</p>
+            <form action="{{ url_for('eliminar_calefactor') }}" method="POST">
+                <input type="hidden" id="delete_id_calefactor" name="id_calefactor">
+                <button type="submit" class="btn">Sí, eliminar</button>
+                <button type="button" class="btn-cancelar" onclick="closeModal('eliminarCalefactorModal')">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/calefactores.js') }}"></script>
+{% endblock %}

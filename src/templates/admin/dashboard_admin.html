@@ -1,0 +1,17 @@
+{% extends 'base_admin.html' %}
+
+{% block title %}Dashboard - HeatSpots{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <h1 class="dashboard-title">Dashboard</h1>
+    <div class="dashboard-section">
+        <!-- Incrusta Dash con un iframe -->
+        <iframe src="/dash/" width="100%" height="600px" style="border: none;"></iframe>
+    </div>
+</div>
+{% endblock %}

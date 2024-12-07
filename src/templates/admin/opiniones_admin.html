@@ -1,0 +1,60 @@
+{% extends 'base_admin.html' %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/opiniones_admin.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="opinion-container">
+    <h2>Opiniones</h2>
+    <div class="opiniones-table-container">
+        <table class="opiniones-table">
+            <thead>
+                <tr>
+                    <th>Usuario</th>
+                    <th>Opinión</th>
+                    <th>Rating</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for opinion in opiniones %}
+                <tr>
+                    <td>{{ opinion.usuario }}</td>
+                    <td>{{ opinion.opinion }}</td>
+                    <td>{{ opinion.rating }}</td>
+                    <td>{{ opinion.fecha }}</td>
+                    <td>{{ opinion.hora }}</td>
+                    <td>
+                        <img src="{{ url_for('static', filename='img/iconos/delete.png') }}" alt="Eliminar" 
+                             class="action-icon" 
+                             onclick="openEliminarModal('{{ opinion.id_opinion }}')">
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal para eliminar opinión -->
+<div id="eliminarOpinionModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('eliminarOpinionModal')">&times;</span>
+        <h3>Eliminar Opinión</h3>
+        <p>¿Estás seguro de que deseas eliminar esta opinión?</p>
+        <form id="eliminarOpinionForm" action="{{ url_for('eliminar_opinion') }}" method="POST">
+            <input type="hidden" id="delete_id_opinion" name="id_opinion">
+            <button type="submit" class="btn">Eliminar</button>
+            <button type="button" class="btn-cancelar" onclick="closeModal('eliminarOpinionModal')">Cancelar</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/opiniones_admin.js') }}"></script>
+{% endblock %}

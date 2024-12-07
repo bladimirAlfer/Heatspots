@@ -1,0 +1,104 @@
+{% extends 'base_admin.html' %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/institucion.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="institucion-container">
+    <h2>Instituciones</h2>
+    <button class="btn-nuevo" onclick="openAgregarInstitucion()">Nuevo</button>
+
+    <table class="instituciones-table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Logo</th>
+                <th>Imagen Universidad</th> <!-- Nueva columna para la imagen de la universidad -->
+                <th>Descripción</th>
+                <th>Sensores Activos</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for institucion in instituciones %}
+            <tr>
+                <td>{{ institucion.nombre }}</td>
+                <td>
+                    <img src="{{ url_for('static', filename='img/uploads/' + institucion.logo.split('/')[-1]) }}" alt="Logo" class="logo-institucion">
+                </td>
+                <td>
+                    <img src="{{ url_for('static', filename='img/uploads/' + institucion.imagen_universidad.split('/')[-1]) }}" alt="Imagen Universidad" class="imagen-universidad"> <!-- Imagen Universidad -->
+                </td>
+                <td>{{ institucion.descripcion | truncate(30) }}</td>
+                <td>{{ institucion.sensores_activos }}</td>
+                <td>
+                    <img src="{{ url_for('static', filename='img/iconos/edit.png') }}" alt="Editar" class="action-icon" onclick="openEditarInstitucion('{{ institucion.id_institucion }}')">
+                    <img src="{{ url_for('static', filename='img/iconos/delete.png') }}" alt="Eliminar" class="action-icon" onclick="openEliminarInstitucion('{{ institucion.id_institucion }}')">
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Modal para agregar institución -->
+    <div id="agregarInstitucionModal" class="modal">
+        <div class="modal-content">
+            <h3>Agregar Institución</h3>
+            <form action="{{ url_for('agregar_institucion') }}" method="POST" enctype="multipart/form-data">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre" required>
+
+                <label for="logo">Logo</label>
+                <input type="file" id="logo" name="logo" required>
+
+                <label for="imagen_universidad">Imagen Universidad</label> <!-- Nueva entrada para imagen -->
+                <input type="file" id="imagen_universidad" name="imagen_universidad" required>
+
+                <label for="descripcion">Descripción</label>
+                <textarea id="descripcion" name="descripcion" required></textarea>
+
+                <button type="submit" class="btn">Registrar</button>
+                <button type="button" class="btn-cancelar" onclick="closeModal('agregarInstitucionModal')">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para editar institución -->
+    <div id="editarInstitucionModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('editarInstitucionModal')">&times;</span>
+            <h2>Editar Institución</h2>
+            <form id="editarInstitucionForm" action="{{ url_for('editar_institucion') }}" method="POST" enctype="multipart/form-data">
+                <input type="hidden" id="edit_id" name="id_institucion">
+                <label for="edit_nombre">Nombre:</label>
+                <input type="text" id="edit_nombre" name="nombre" required>
+                <label for="edit_logo">Logo:</label>
+                <input type="file" id="edit_logo" name="logo">
+                <label for="edit_imagen_universidad">Imagen Universidad:</label> <!-- Nueva entrada para imagen -->
+                <input type="file" id="edit_imagen_universidad" name="imagen_universidad">
+                <label for="edit_descripcion">Descripción:</label>
+                <textarea id="edit_descripcion" name="descripcion"></textarea>
+                <button type="submit">Guardar cambios</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para eliminar institución -->
+    <div id="eliminarInstitucionModal" class="modal">
+        <div class="modal-content">
+            <h3>Eliminar</h3>
+            <p>¿Estás seguro que deseas eliminar esta institución?</p>
+            <form id="eliminarForm" action="{{ url_for('eliminar_institucion') }}" method="POST">
+                <input type="hidden" id="delete_id" name="id_institucion">
+                <button type="submit" class="btn">Sí, estoy seguro</button>
+                <button type="button" class="btn-cancelar" onclick="closeModal('eliminarInstitucionModal')">Cancelar</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/institucion.js') }}"></script>
+{% endblock %}

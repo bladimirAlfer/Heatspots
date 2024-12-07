@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Reportes - HeatSpots{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home_user.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/opiniones.css') }}">
+{% endblock %}
+
+{% block navbar_links %}
+<nav class="navbar">
+    <a href="/home_user#intro" class="nav-link intituciones active">Instituciones</a>
+    <a href="/opiniones" class="nav-link opiniones">Opiniones</a>
+    <a href="/reportes_user" class="nav-link reportes">Reportes</a>
+    <div class="user-dropdown">
+        <button class="dropdown-toggle" onclick="toggleDropdown()">
+            Bienvenido&nbsp;<strong>{{ user_name }}!</strong>
+            <img src="{{ profile_image if profile_image else url_for('static', filename='img/uploads/default_profile.png') }}" 
+                 alt="{{ user_name or 'Usuario' }}" 
+                 class="profile-icon">
+            <img src="{{ url_for('static', filename='img/iconos/arrow.png') }}" alt="Flecha" class="arrow-icon">
+        </button>
+        <div id="dropdown-content" class="dropdown-content">
+            <div class="user-info">
+                <img src="{{ profile_image if profile_image else url_for('static', filename='img/uploads/default_profile.png') }}" 
+                     alt="{{ user_name or 'Usuario' }}" 
+                     class="avatar">
+                <div class="user-details">
+                    <p class="user-name">{{ user_name }}</p>
+                    <p class="user-email">{{ user_email }}</p>
+                </div>
+            </div>
+            <a href="{{ url_for('perfil') }}" class="dropdown-item">Perfil</a>
+            <a href="{{ url_for('reportes_user') }}" class="dropdown-item">Reportes</a>
+            <a href="{{ url_for('logout') }}" class="dropdown-item">Logout</a>
+        </div>
+    </div>
+</nav>
+{% endblock %}
+
+
+{% block content %}
+<div class="opiniones-page">
+    <!-- Lista de opiniones -->
+    <div class="opiniones-list-container">
+        <h2>Opiniones</h2>
+        <div id="opinionesList" class="opiniones-list">
+            <!-- Opiniones cargadas dinámicamente -->
+        </div>
+    </div>
+
+    <!-- Formulario de opinión -->
+    <div class="opinion-form-container">
+        <div id="opinionesContainer" data-current-user-id="{{ session['id_usuario'] }}" class="opinion-form-wrapper">
+            <h2>Deja tu opinión</h2>
+            <p>Califica tu experiencia</p>
+            <div class="rating-stars" id="ratingStars">
+                {% for star in range(1, 6) %}
+                <span class="star" data-value="{{ star }}">&#9733;</span>
+                {% endfor %}
+            </div>
+            <textarea id="opinionText" placeholder="Escribe tu opinión aquí..."></textarea>
+            <button id="submitOpinion">Enviar Opinión</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/opiniones.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}Plano del Piso - {{ piso.nombre }}{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home_user.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pisos.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/plano.css') }}">
+    {% endblock %}
+
+    {% block navbar_links %}
+    <nav class="navbar">
+        <a href="/home_user#intro" class="nav-link intituciones active">Instituciones</a>
+        <a href="/opiniones" class="nav-link opiniones">Opiniones</a>
+        <a href="/reportes_user" class="nav-link reportes">Reportes</a>
+        <div class="user-dropdown">
+            <button class="dropdown-toggle" onclick="toggleDropdown()">
+                Bienvenido&nbsp;<strong>{{ user_name }}!</strong>
+                <img src="{{ profile_image if profile_image else url_for('static', filename='img/uploads/default_profile.png') }}" 
+                     alt="{{ user_name or 'Usuario' }}" 
+                     class="profile-icon">
+                <img src="{{ url_for('static', filename='img/iconos/arrow.png') }}" alt="Flecha" class="arrow-icon">
+            </button>
+            <div id="dropdown-content" class="dropdown-content">
+                <div class="user-info">
+                    <img src="{{ profile_image if profile_image else url_for('static', filename='img/uploads/default_profile.png') }}" 
+                         alt="{{ user_name or 'Usuario' }}" 
+                         class="avatar">
+                    <div class="user-details">
+                        <p class="user-name">{{ user_name }}</p>
+                        <p class="user-email">{{ user_email }}</p>
+                    </div>
+                </div>
+                <a href="{{ url_for('perfil') }}" class="dropdown-item">Perfil</a>
+                <a href="{{ url_for('reportes_user') }}" class="dropdown-item">Reportes</a>
+                <a href="{{ url_for('logout') }}" class="dropdown-item">Logout</a>
+            </div>
+        </div>
+    </nav>
+    {% endblock %}
+    
+
+{% block content %}
+<section class="instituciones-header">
+    <img src="{{ url_for('static', filename='img/uploads/' + institucion.logo.split('/')[-1]) }}" alt="{{ institucion.nombre }}" class="institucion-logo">
+</section>
+
+<section class="plano-section">
+    <div class="back-button">
+        <a href="{{ url_for('pisos', id_institucion=institucion.id_institucion) }}">
+            <img src="{{ url_for('static', filename='img/iconos/arrow-back.png') }}" alt="Volver" class="back-arrow"> 
+            <span>Ver otros pisos</span>
+        </a>
+    </div>
+
+    <div id="plano-container" style="position: relative;">
+        <img id="plano" src="{{ url_for('static', filename='img/uploads/' + piso.plano.split('/')[-1]) }}" alt="Plano del Piso" class="imagen-plano">
+        
+        <!-- Mostrar calefactores en el plano -->
+        {% for calefactor in calefactores %}
+        <div class="ubicacion-marcador {{ 'encendido' if calefactor.estado == 'encendido' else 'apagado' }}" 
+            style="top: {{ calefactor.coordenadas.split(',')[1] }}px; left: {{ calefactor.coordenadas.split(',')[0] }}px;"
+            onclick="mostrarInformacion({{ calefactor.id_ubicacion }})">
+        </div>
+        {% endfor %}
+    
+
+    </div>
+    
+</section>
+
+
+<!-- Modal para mostrar información de la ubicación -->
+<div id="informacionModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="cerrarModal()">&times;</span>
+        <img id="imagen-ubicacion" src="" alt="Imagen Ubicación" class="imagen-ubicacion">
+        <p>Temperatura actual: <span id="temperatura-ubicacion"></span>°C</p>
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script>
+    const calefactores = {{ calefactores | tojson | default([]) }};  // Asegúrate que este valor no sea nulo
+    console.log('Calefactores:', calefactores);  // Verifica en la consola que tiene datos
+</script>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        mostrarUbicaciones();  // Asegurarse de que las ubicaciones se muestran cuando el DOM está listo
+    });
+    
+</script>
+<script src="{{ url_for('static', filename='js/plano.js') }}"></script>
+{% endblock %}
+
+
+

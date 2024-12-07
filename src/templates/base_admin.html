@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin - HeatSpots{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base_admin.css') }}">
+    {% block styles %}{% endblock %}
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <!-- Logo que actúa como botón para ir al dashboard -->
+                <a href="{{ url_for('dashboard_admin') }}" class="logo-button">HeatSpots</a>
+            </div>
+            <nav class="sidebar-nav">
+                <!-- Enlaces del sidebar para las secciones del admin -->
+                <ul class="sidebar-menu">
+                    <li>
+                        <a href="{{ url_for('dashboard_admin') }}" class="sidebar-item {% if active_page == 'dashboard_admin' %}active{% endif %}">
+                            <img src="{{ url_for('static', filename='img/iconos/dashboard.png') }}" alt="dashboard" class="sidebar-icon">
+                            Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('instituciones') }}" class="sidebar-item {% if active_page == 'instituciones' %}active{% endif %}">
+                            <img src="{{ url_for('static', filename='img/iconos/instituciones.png') }}" alt="Instituciones" class="sidebar-icon">
+                            Instituciones
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('pisosadmin') }}" class="sidebar-item {% if active_page == 'pisosadmin' %}active{% endif %}">
+                            <img src="{{ url_for('static', filename='img/iconos/pisos.png') }}" alt="Pisos" class="sidebar-icon">
+                            Pisos
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('ubicaciones') }}" class="sidebar-item {% if active_page == 'ubicaciones' %}active{% endif %}">
+                            <img src="{{ url_for('static', filename='img/iconos/ubicaciones.png') }}" alt="Ubicaciones" class="sidebar-icon">
+                            Ubicaciones
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('calefactores') }}" class="sidebar-item {% if active_page == 'calefactores' %}active{% endif %}">
+                            <img src="{{ url_for('static', filename='img/iconos/calefactor.png') }}" alt="Pisos" class="sidebar-icon">
+                            Calefactores
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('sensores') }}" class="sidebar-item {% if active_page == 'sensores' %}active{% endif %}">
+                            <img src="{{ url_for('static', filename='img/iconos/sensores.png') }}" alt="Sensores" class="sidebar-icon">
+                            Sensores
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('usuarios') }}" class="sidebar-item {% if active_page == 'usuarios' %}active{% endif %}">
+                            <img src="{{ url_for('static', filename='img/iconos/usuarios.png') }}" alt="Usuarios" class="sidebar-icon">
+                            Usuarios
+                        </a>
+                    </li>                    
+                    <li>
+                        <a href="{{ url_for('opiniones_admin') }}" class="sidebar-item {% if active_page == 'opiniones_admin' %}active{% endif %}">
+                            <img src="{{ url_for('static', filename='img/iconos/comentarios.png') }}" alt="Opiniones" class="sidebar-icon">
+                            Opiniones
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('reportes_admin') }}" class="sidebar-item {% if active_page == 'reportes' %}active{% endif %}">
+                            <img src="{{ url_for('static', filename='img/iconos/reportes.png') }}" alt="Reportes" class="sidebar-icon">
+                            Reportes
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Logout separado abajo -->
+            <div class="logout-section">
+                <a href="{{ url_for('logout') }}" class="logout-item">
+                    <img src="{{ url_for('static', filename='img/iconos/logout.png') }}" alt="Logout" class="sidebar-icon">
+                    Logout
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header flotante a la derecha -->
+            <header class="header">
+                <div class="header-content">
+                    <div class="header-profile" style="float: right;">
+                        <span class="profile-name">Bienvenido {{ admin_name }}</span>
+                        <img src="{{ url_for('static', filename='img/iconos/icon-user-circle-regular.png') }}" alt="Perfil" class="profile-icon">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Contenido de cada página específica -->
+            <main class="content-wrapper">
+                {% block content %}
+                {% endblock %}
+            </main>
+        </div>
+    </div>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

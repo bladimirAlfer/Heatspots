@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Reportes - HeatSpots{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home_user.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/reportes_user.css') }}">
+{% endblock %}
+
+{% block navbar_links %}
+<nav class="navbar">
+    <a href="/home_user#intro" class="nav-link intituciones active">Instituciones</a>
+    <a href="/opiniones" class="nav-link opiniones">Opiniones</a>
+    <a href="/reportes_user" class="nav-link reportes">Reportes</a>
+    <div class="user-dropdown">
+        <button class="dropdown-toggle" onclick="toggleDropdown()">
+            Bienvenido&nbsp;<strong>{{ user_name }}!</strong>
+            <img src="{{ profile_image if profile_image else url_for('static', filename='img/uploads/default_profile.png') }}" 
+                 alt="{{ user_name or 'Usuario' }}" 
+                 class="profile-icon">
+            <img src="{{ url_for('static', filename='img/iconos/arrow.png') }}" alt="Flecha" class="arrow-icon">
+        </button>
+        <div id="dropdown-content" class="dropdown-content">
+            <div class="user-info">
+                <img src="{{ profile_image if profile_image else url_for('static', filename='img/uploads/default_profile.png') }}" 
+                     alt="{{ user_name or 'Usuario' }}" 
+                     class="avatar">
+                <div class="user-details">
+                    <p class="user-name">{{ user_name }}</p>
+                    <p class="user-email">{{ user_email }}</p>
+                </div>
+            </div>
+            <a href="{{ url_for('perfil') }}" class="dropdown-item">Perfil</a>
+            <a href="{{ url_for('reportes_user') }}" class="dropdown-item">Reportes</a>
+            <a href="{{ url_for('logout') }}" class="dropdown-item">Logout</a>
+        </div>
+    </div>
+</nav>
+{% endblock %}
+
+
+{% block content %}
+<div class="reportes-section">
+    <!-- Botón de regreso -->
+    <div class="back-button">
+        <a href="{{ url_for('home_user') }}#intro">
+            <img src="{{ url_for('static', filename='img/iconos/arrow-back.png') }}" alt="Volver" class="back-arrow"> 
+            <span>Ver otras instituciones</span>
+        </a>
+    </div>
+
+    <!-- Título y descripción -->
+    <div class="left-section">
+        <h1 class="report-title">Reportar Incidencia</h1>
+        <p class="report-description">Haz presenciado algún problema o error en cuanto al funcionamiento del calefactor?</p>
+        <p class="report-highlight">¡Repórtalo!</p>
+        <p class="contact-info">
+            heatspots@gmail.com<br>
+            Call Center: 949 955 270
+        </p>
+    </div>
+
+    <!-- Formulario -->
+    <div class="right-section">
+        <form action="{{ url_for('enviar_reporte') }}" method="POST">
+            <div class="report-dropdown-container">
+                <div class="report-dropdown-header" id="id_institucion-header" data-name="id_institucion">Selecciona la institución</div>
+                <div class="report-dropdown-content" id="id_institucion"></div>
+            </div>
+            <div class="report-dropdown-container">
+                <div class="report-dropdown-header" id="id_piso-header" data-name="id_piso">Selecciona el piso</div>
+                <div class="report-dropdown-content" id="id_piso"></div>
+            </div>
+            <div class="report-dropdown-container">
+                <div class="report-dropdown-header" id="id_calefactor-header" data-name="id_calefactor">Selecciona el calefactor</div>
+                <div class="report-dropdown-content" id="id_calefactor"></div>
+            </div>
+            <div class="report-dropdown-container">
+                <div class="report-dropdown-header" id="tipo_reporte-header" data-name="tipo_reporte">Selecciona el tipo de reporte</div>
+                <div class="report-dropdown-content">
+                    <div class="report-dropdown-option" data-value="Calefactor Apagado">Calefactor Apagado</div>
+                    <div class="report-dropdown-option" data-value="Sensor Defectuoso">Sensor Defectuoso</div>
+                    <div class="report-dropdown-option" data-value="No Calienta">No Calienta</div>
+                    <div class="report-dropdown-option" data-value="Ocupación Incorrecta">Ocupación Incorrecta</div>
+                </div>
+            </div>
+        
+            <!-- Campos ocultos para valores seleccionados -->
+            <input type="hidden" name="id_institucion" id="hidden_id_institucion">
+            <input type="hidden" name="id_piso" id="hidden_id_piso">
+            <input type="hidden" name="id_calefactor" id="hidden_id_calefactor">
+            <input type="hidden" name="tipo_reporte" id="hidden_tipo_reporte">
+        
+            <!-- Comentarios -->
+            <div class="comment-section">
+                <label class="comment-label">Comentarios:</label>
+                <textarea name="comentario" class="comment-box" placeholder="Agrega un comentario opcional"></textarea>
+            </div>
+        
+            <!-- Botón Enviar -->
+            <div class="submit-container">
+                <button type="submit" class="submit-button">Enviar</button>
+            </div>
+        </form>
+        
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/reportes_user.js') }}"></script>
+{% endblock %}

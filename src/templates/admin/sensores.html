@@ -1,0 +1,163 @@
+{% extends "base_admin.html" %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/sensores.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="sensor-container">
+    <h2>Sensores</h2>
+    <button class="btn-nuevo" onclick="openAgregarSensor()">Nuevo Sensor</button>
+    <div class="ubicaciones-table-container">
+        <table class="ubicaciones-table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Estado</th>
+                    <th>Ubicación</th>
+                    <th>Piso</th>
+                    <th>Institución</th>
+                    <th>Última Temp</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sensor in sensores %}
+                <tr>
+                    <td>{{ sensor.nombre }}</td>
+                    <td>
+                        <div class="estado-botones">
+                            <!-- Botón Encendido -->
+                            <button class="btn-estado encendido {{ 'seleccionado' if sensor.estado == 'encendido' else '' }}"
+                                    onclick="cambiarEstadoSensor('{{ sensor.id_sensor }}', 'encendido')">
+                                <img src="{{ url_for('static', filename='img/iconos/on.png') }}" alt="Encender" />
+                            </button>
+                    
+                            <!-- Botón Apagado -->
+                            <button class="btn-estado apagado {{ 'seleccionado' if sensor.estado == 'apagado' else '' }}"
+                                    onclick="cambiarEstadoSensor('{{ sensor.id_sensor }}', 'apagado')">
+                                <img src="{{ url_for('static', filename='img/iconos/off.png') }}" alt="Apagar" />
+                            </button>
+                        </div>
+                    </td>                    
+                    <td>{{ sensor.ubicacion }}</td>
+                    <td>{{ sensor.piso }}</td>
+                    <td>{{ sensor.institucion }}</td>
+                    <td>{{ sensor.ultima_temp or 'N/A' }}</td>
+                    <td>
+                        <img src="{{ url_for('static', filename='img/iconos/edit.png') }}" alt="Editar" class="action-icon" onclick="openEditarSensor('{{ sensor.id_sensor }}')">
+                        <img src="{{ url_for('static', filename='img/iconos/delete.png') }}" alt="Eliminar" class="action-icon" onclick="openEliminarSensor('{{ sensor.id_sensor }}')">
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal para agregar sensor -->
+    <div id="agregarSensorModal" class="modal">
+        <div class="modal-content">
+            <h3>Agregar Sensor</h3>
+            <form action="{{ url_for('agregar_sensor') }}" method="POST">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required>
+
+                <label for="id_institucion">Institución:</label>
+                <select id="id_institucion" name="id_institucion" required onchange="filtrarPisosPorInstitucion()">
+                    <option value="" disabled selected>Seleccione una institución</option>
+                    {% for institucion in instituciones %}
+                        <option value="{{ institucion.id_institucion }}">{{ institucion.nombre }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="id_piso">Piso:</label>
+                <select id="id_piso" name="id_piso" required onchange="filtrarUbicacionesPorPiso(this.value, '')">
+                    <option value="">Seleccione un piso</option>
+                </select>
+
+                <label for="id_ubicacion">Ubicación:</label>
+                <select id="id_ubicacion" name="id_ubicacion" required>
+                    <option value="">Seleccione una ubicación</option>
+                </select>
+
+                <label for="tipo_sensor">Tipo de Sensor:</label>
+                <select id="tipo_sensor" name="tipo_sensor" required>
+                    <option value="temperatura">Seleccione un tipo</option>
+                    <option value="personas">Personas</option>
+                    <option value="temperatura">Temperatura</option>
+                </select>
+
+                <label for="estado">Estado:</label>
+                <select id="estado" name="estado" required>
+                    <option value="encendido">Seleccione un estado</option>
+                    <option value="apagado">Apagado</option>
+                    <option value="encendido">Encendido</option>
+                </select>
+
+                <button type="submit" class="btn">Guardar Sensor</button>
+                <button type="button" class="btn-cancelar" onclick="closeModal('agregarSensorModal')">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para editar sensor -->
+<!-- Modal para editar sensor -->
+    <div id="editarSensorModal" class="modal">
+        <div class="modal-content">
+            <h3>Editar Sensor</h3>
+            <form id="editarSensorForm" action="{{ url_for('editar_sensor') }}" method="POST">
+                <input type="hidden" id="edit_id_sensor" name="id_sensor">
+
+                <label for="edit_nombre">Nombre:</label>
+                <input type="text" id="edit_nombre" name="nombre" required>
+
+                <label for="edit_id_institucion">Institución:</label>
+                <select id="edit_id_institucion" name="id_institucion" required onchange="filtrarPisosPorInstitucion('edit_')">
+                    <option value="" disabled selected>Seleccione una institución</option>
+                    {% for institucion in instituciones %}
+                        <option value="{{ institucion.id_institucion }}">{{ institucion.nombre }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="edit_id_piso">Piso:</label>
+                <select id="edit_id_piso" name="id_piso" required onchange="filtrarUbicacionesPorPiso(this.value, 'edit_')">
+                    <option value="">Seleccione un piso</option>
+                </select>
+
+                <label for="edit_id_ubicacion">Ubicación:</label>
+                <select id="edit_id_ubicacion" name="id_ubicacion" required>
+                    <option value="">Seleccione una ubicación</option>
+                </select>
+
+                <label for="edit_tipo_sensor">Tipo de Sensor:</label>
+                <select id="edit_tipo_sensor" name="tipo_sensor" required>
+                    <option value="temperatura">Seleccione un tipo</option>
+                    <option value="personas">Personas</option>
+                    <option value="temperatura">Temperatura</option>
+                </select>
+
+                <button type="submit" class="btn">Guardar Cambios</button>
+                <button type="button" class="btn-cancelar" onclick="closeModal('editarSensorModal')">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para eliminar sensor -->
+    <div id="eliminarSensorModal" class="modal">
+        <div class="modal-content">
+            <h3>Eliminar Sensor</h3>
+            <p>¿Estás seguro que deseas eliminar este sensor?</p>
+            <form action="{{ url_for('eliminar_sensor') }}" method="POST">
+                <input type="hidden" id="delete_id_sensor" name="id_sensor">
+                <button type="submit" class="btn">Sí, eliminar</button>
+                <button type="button" class="btn-cancelar" onclick="closeModal('eliminarSensorModal')">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/sensores.js') }}"></script>
+{% endblock %}
