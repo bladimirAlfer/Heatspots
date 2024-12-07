@@ -1,0 +1,201 @@
+.calefactor-container {
+    padding: 20px;
+    background-color: #F5F6F8; /* Fondo claro */
+    border-radius: 8px;
+}
+
+.ubicaciones-table-container {
+    max-height: 500px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Estilo para la tabla */
+.ubicaciones-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin: 0;
+}
+
+.ubicaciones-table th, .ubicaciones-table td {
+    border: 1px solid #e5e7eb;
+    padding: 12px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Encabezado fijo con fondo oscuro */
+.ubicaciones-table thead th {
+    position: sticky;
+    top: 0;
+    background-color: #161C2D;
+    color: white;
+    z-index: 1;
+}
+
+.ubicaciones-table td {
+    color: #374151;
+    font-weight: 500;
+}
+
+.ubicaciones-table td img.imagen-ubicacion {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* Estilos para el botón */
+.btn-nuevo {
+    background-color: #161C2D;
+    color: white;
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.btn-nuevo:hover {
+    background-color: #3b496f;
+}
+
+/* Estilos generales del modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 10px;
+    padding: 30px;
+    width: 40%;
+    max-width: 600px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    margin: auto;
+}
+
+.modal-content h3 {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.modal-content label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #4b5563;
+}
+
+.modal-content input[type="text"],
+.modal-content input[type="file"],
+.modal-content textarea,
+.modal-content select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+    background-color: #f9fafb;
+}
+
+.modal-content button {
+    padding: 12px 20px;
+    background-color: #1d4ed8;
+    color: white;
+    font-weight: 600;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.modal-content button:hover {
+    background-color: #2563eb;
+}
+
+.btn-cancelar {
+    background-color: #f44336;
+}
+
+.btn-cancelar:hover {
+    background-color: #e53935;
+}
+
+.estado-botones {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+}
+
+.btn-estado {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+
+/* Icono dentro del botón */
+.btn-estado img {
+    width: 25px;
+    height: 25px;
+}
+
+.action-icon {
+    width: 24px; /* Tamaño de los íconos */
+    height: 24px;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: transform 0.2s ease; /* Efecto al pasar el cursor */
+}
+.action-icon:hover {
+    transform: scale(1.2); /* Aumenta ligeramente el tamaño */
+}
+
+/* Encendido - Verde */
+
+.btn-estado.encendido.seleccionado {
+    background-color: #d4fcd8; /* Verde oscuro */
+}
+
+/* Apagado - Rojo */
+
+
+.btn-estado.apagado.seleccionado {
+    background-color: #ffd6d6; /* Rojo oscuro */
+}
+
+/* Hover sin cambiar el estado */
+.btn-estado:not(.seleccionado):hover {
+    opacity: 0.8; /* Efecto de transparencia en hover */
+}
+

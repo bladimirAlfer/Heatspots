@@ -1,0 +1,122 @@
+/* Contenedor principal */
+
+.login-container {
+    width: 100%;
+    height: 94%;
+    background: #F4F7FA;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+h1 {
+    color: #161C2D;
+    font-family: "Baloo 2", sans-serif;
+    font-size: 60px;
+    font-weight: 700;
+    line-height: 40px;
+    letter-spacing: -2px;
+}
+
+p {
+    color: #161C2D;
+    font-family: "Baloo 2", sans-serif;
+    font-size: 19px;
+    font-weight: 400;
+    line-height: 100px;
+    letter-spacing: -0.2px;
+}
+
+.login-form {
+    background: #FFF;
+    width: 350px;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #E7E9ED;
+    box-shadow: 0px 34px 33px -23px rgba(22, 28, 45, 0.13);
+}
+
+
+label {
+    color: #161C2D;
+    font-family: "Baloo 2", sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 26px;
+    margin-bottom: 8px;
+    display: block;
+    text-align: left; /* Alinea el texto a la derecha */
+    width: 500; /* Controla el espacio ocupado por el label */
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 16px;
+    border: 1px solid #E7E9ED;
+    border-radius: 8px;
+    box-shadow: 0px 34px 33px -23px rgba(22, 28, 45, 0.13);
+    font-family: "Baloo 2", sans-serif;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    color: #FFF;
+    background-color: #3758F9;
+    border: none;
+    border-radius: 8px;
+    font-family: "Baloo 2", sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.6px;
+    cursor: pointer;
+}
+
+.forgot-password {
+    color: #3758F9;
+    text-align: right;
+    font-family: "Baloo 2", sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    display: block;
+    margin-bottom: 20px;
+    text-decoration: none;
+}
+
+.create-account {
+    color: #3758F9;
+    font-family: "Baloo 2", sans-serif;
+    font-size: 17px;
+    font-weight: 400;
+    text-decoration: none;
+}
+
+/* Estilo básico del navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 100px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #e0e0e0; /* Línea sutil en la parte inferior */
+    padding: 0 20px;
+}
+
+
+/* Estilo del logo en forma de texto */
+.navbar-logo {
+    font-family: 'Rubik', sans-serif; /* Fuente Rubik */
+    font-weight: 700; /* Negrita */
+    font-size: 48px; /* Tamaño del texto del logo */
+    color: #161C2D; /* Color del texto */
+}
+
+
+.navbar-logo:hover {
+    opacity: 0.8; /* Efecto hover para el logo */
+}

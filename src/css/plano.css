@@ -1,0 +1,130 @@
+
+/* Mantener el estilo general de los marcadores */
+.ubicacion-marcador {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    position: absolute;
+    cursor: pointer;
+}
+/* Punto para calefactores encendidos */
+.ubicacion-marcador.encendido {
+    background-color: red;
+}
+
+/* Punto para calefactores apagados */
+.ubicacion-marcador.apagado {
+    background-color: blue;
+}
+
+
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000; /* Asegura que esté encima de otros elementos */
+    left: 0;
+    top: 0;
+    width: 100vw; /* Asegura que cubra todo el ancho de la pantalla */
+    height: 100vh; /* Asegura que cubra toda la altura de la pantalla */
+    background-color: rgba(0, 0, 0, 0.6); /* Fondo oscuro translúcido */
+    overflow: auto;
+}
+
+
+.modal-content {
+    position: relative;
+    margin: 10% auto; /* Ajusta el espacio superior */
+    padding: 30px;
+    width: 40%; /* Tamaño del modal */
+    max-width: 600px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+    animation: slide-down 0.4s ease-out; /* Efecto de deslizado */
+}
+
+/* Efecto de aparición del modal */
+@keyframes slide-down {
+    from {
+        transform: translateY(-30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Ícono de cierre en la esquina */
+.modal-content .close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.modal-content .close:hover {
+    color: #f44336; /* Rojo al pasar el cursor */
+}
+
+.tooltip {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.75); /* Fondo oscuro */
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    white-space: nowrap;
+    pointer-events: none; /* No interfiere con el mouse */
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 9999;
+}
+
+
+
+/* Estilo de la imagen en el modal */
+.imagen-ubicacion {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+/* Texto del modal */
+.modal-content p {
+    font-size: 18px;
+    color: #333;
+    margin: 10px 0;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+.imagen-ubicacion {
+    max-width: 100%;
+    height: auto;
+}
+
+
+/* Modal image and plan size */
+.imagen-plano {
+    width: 850px;  /* Fija el ancho */
+    height: 590; /* Fija la altura */
+    object-fit: contain; /* Evita la distorsión de la imagen */
+    border: 1px solid #ddd;
+}
+
