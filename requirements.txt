@@ -1,0 +1,6 @@
+flask
+pymysql
+flask-sqlalchemy
+plotly
+dash
+pandas

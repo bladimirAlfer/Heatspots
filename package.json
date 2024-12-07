@@ -1,0 +1,19 @@
+{
+  "dependencies": {
+    "autoprefixer": "^10.4.20",
+    "bootstrap": "^5.3.3",
+    "postcss-cli": "^11.0.0",
+    "tailwindcss": "^3.4.14"
+  },
+  "name": "proyecto",
+  "description": "1. clonar proyecto\r git clone https://github.com/jfarfannet/flask-poo-v1",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:css": "postcss src/static/css/tailwind.css -o src/static/css/tailwind.build.css"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
