@@ -1,9 +1,5 @@
 # HeatSpots - Web Application
 
-## Descripción
-
-HeatSpots es una aplicación web para la gestión de instituciones, pisos, ubicaciones, sensores y calefactores, con visualización interactiva de planos y datos en tiempo real.
-
 ---
 
 ## Requisitos
