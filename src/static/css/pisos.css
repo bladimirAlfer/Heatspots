@@ -1,0 +1,165 @@
+.instituciones-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.institucion-logo {
+    width: 297px;
+    height: 140px;
+}
+
+.pisos-section {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.piso-card {
+    width: 427px;
+    height: 278px;
+    background: #FFF;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    transition: transform 0.3s ease;
+    margin: 40px; /* Añadimos margen para separar los pisos */
+}
+
+.piso-card:hover {
+    transform: scale(1.05);
+}
+
+.piso-text {
+    text-align: center;
+    font-family: "Baloo 2", sans-serif;
+    font-size: 20px;
+    color: #161C2D;
+}
+
+
+/* Asegura que el contenido no se superponga al navbar */
+body {
+    padding-top: 260px; /* Ajusta este valor según la altura del navbar */
+}
+
+/* Asegura que el footer siempre esté en la parte inferior de la página */
+html, body {
+    height: 100%; /* Asegura que tanto el html como el body ocupen toda la altura */
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px; /* Ajusta la altura del footer según lo que necesites */
+    background-color: #f9f9f9;
+}
+
+/* Asegura que el contenido mínimo sea del tamaño de la pantalla para que el footer no se mueva */
+main {
+    min-height: calc(100vh - 60px); /* Altura mínima del contenido, menos la altura del footer */
+}
+
+/* Ajustes en los contenedores de las imágenes */
+.piso-card {
+    width: 427px;
+    height: 278px;
+    background: #FFF;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    margin-bottom: 20px;
+}
+
+.piso-image {
+    width: 100%; /* Asegúrate de que ocupe el ancho del contenedor */
+    height: 200px; /* Ajusta la altura según tus necesidades */
+    background-size: cover; /* Hace que la imagen se ajuste al tamaño del contenedor */
+    background-position: center; /* Centra la imagen dentro del contenedor */
+    border: 1px solid #ddd; /* Opcional: Agrega un borde */
+    border-radius: 8px; /* Opcional: Agrega bordes redondeados */
+}
+
+
+.piso-text {
+    text-align: center;
+    font-family: "Baloo 2", sans-serif;
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+/* Estilo para el contenedor del botón de regreso */
+.back-button {
+    display: inline-flex;
+    justify-content: flex-start; /* Justificación hacia la izquierda */
+    align-items: flex-start;
+    width: 307px; /* Ancho fijo */
+    height: 70px; /* Altura fija */
+    position: absolute; /* Posición absoluta */
+    top: 177px; /* Alineación desde la parte superior */
+    left: 108px; /* Alineación desde la izquierda */
+    padding: 23px 0px 21px 0px; /* Ajuste de padding */
+    gap: 0px; /* No hay separación entre elementos */
+    opacity: 1; /* Ajustamos la opacidad a 1 para que se vea */
+    font-family: "Baloo 2", sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 26px; /* Altura de línea acorde con el texto */
+    letter-spacing: -0.1px;
+    color: #161C2D;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+
+/* Estilo para la flecha (imagen) */
+.back-arrow {
+    width: 32px;
+    height: 25px;
+}
+
+/* Estilo para el enlace del texto dentro del botón */
+.back-button a {
+    text-decoration: none; /* Elimina subrayado del enlace */
+    color: #161C2D;
+    display: flex;
+    align-items: center;
+}
+
+/* Cambia el color del texto y la flecha cuando se pasa el cursor */
+.back-button a:hover span, 
+.back-button a:hover .back-arrow {
+    opacity: 0.8; /* Pequeño efecto visual al hacer hover */
+}
+
+/* Opcional: agrega un pequeño margen para separar el botón de otros elementos */
+.back-button {
+    margin-bottom: 20px;
+}
+
+
+
+.plano-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Mueve el contenido hacia arriba */
+    min-height: 60vh; /* Mantiene la altura completa */
+    padding-top: 20px; /* Ajusta el espacio superior */
+}
+
+.plano-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0px;
+}
+
+.plano {
+    width: 1469px;
+    height: 757px;
+    flex-shrink: 0; /* Evita que la imagen se reduzca */
+    object-fit: cover; /* Ajusta la imagen en caso de que no se ajuste exactamente al tamaño */
+}
+
+.back-button {
+    align-self: flex-start; /* Coloca el botón en la esquina superior izquierda */
+    margin-left: 20px;
+    margin-top: 10px;
+}

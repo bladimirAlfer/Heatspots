@@ -1,0 +1,162 @@
+/* Contenedor principal */
+.piso-container {
+    padding: 20px;
+    background-color: #F5F6F8;
+    border-radius: 8px;
+}
+
+/* Contenedor de la tabla */
+.ubicaciones-table-container {
+    max-height: 500px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Tabla de pisos */
+.pisos-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.pisos-table th, .pisos-table td {
+    border: 1px solid #e5e7eb;
+    padding: 12px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Encabezado fijo y estilo */
+.pisos-table thead th {
+    position: sticky;
+    top: 0;
+    background-color: #161C2D;
+    color: white;
+    z-index: 1;
+}
+
+.pisos-table td {
+    color: #374151;
+    font-weight: 500;
+}
+
+/* Estilo de las imágenes */
+.imagen-piso, .imagen-plano {
+    width: 80px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+/* Botón nuevo */
+.btn-nuevo {
+    background-color: #161C2D;
+    color: white;
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.btn-nuevo:hover {
+    background-color: #3b496f;
+}
+
+/* Iconos de acción */
+
+.action-icon {
+    width: 24px; /* Tamaño de los íconos */
+    height: 24px;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: transform 0.2s ease; /* Efecto al pasar el cursor */
+}
+.action-icon:hover {
+    transform: scale(1.2); /* Aumenta ligeramente el tamaño */
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+
+.modal-content {
+    background-color: white;
+    border-radius: 10px;
+    padding: 30px;
+    width: 40%;
+    max-width: 600px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.modal-content h3 {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.modal-content label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #4b5563;
+}
+
+.modal-content input[type="text"],
+.modal-content input[type="file"],
+.modal-content select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    background-color: #f9fafb;
+}
+
+/* Botones */
+.modal-content button {
+    padding: 12px 20px;
+    background-color: #1d4ed8;
+    color: white;
+    font-weight: 600;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.modal-content button:hover {
+    background-color: #2563eb;
+}
+
+.btn-cancelar {
+    background-color: #f44336;
+}
+
+.btn-cancelar:hover {
+    background-color: #e53935;
+}

@@ -1,0 +1,111 @@
+.perfil-section {
+    display: flex;
+    justify-content: center;
+    padding: 50px;
+}
+
+.perfil-container {
+    display: flex;
+    gap: 80px;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+
+
+/* Asegura que el contenido no se superponga al navbar */
+body {
+    padding-top: 180px; /* Ajusta este valor según la altura del navbar */
+}
+
+/* Asegura que el footer siempre esté en la parte inferior de la página */
+html, body {
+    height: 100%; /* Asegura que tanto el html como el body ocupen toda la altura */
+}
+
+
+.perfil-card {
+    width: 300px;
+    height: 400px;
+    background-color: #FFFFFF;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 14px;
+    text-align: center;
+    padding: 20px;
+}
+
+.perfil-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+}
+
+.perfil-name {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: #161C2D;
+    margin-bottom: 5px;
+}
+
+.perfil-job {
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    color: #999999;
+}
+
+.perfil-info {
+    width: 500px;
+    background-color: #FFFFFF;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 14px;
+    padding: 30px;
+}
+
+.perfil-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.perfil-form label {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    color: #555555;
+    font-weight: 600;
+}
+
+.perfil-form input,
+.perfil-form textarea {
+    padding: 10px;
+    border: 1px solid #CCCCCC;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: #333333;
+}
+
+.perfil-form textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.save-button {
+    background-color: #161C2D;
+    color: #FFFFFF;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+    align-self: flex-end;
+    width: 150px;
+}
+
+.save-button:hover {
+    background-color: #000000;
+}

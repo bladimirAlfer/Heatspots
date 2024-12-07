@@ -1,0 +1,202 @@
+/* Estilos del Navbar */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+.title a {
+    font-family: 'Rubik', sans-serif;
+    font-size: 48px;
+    font-weight: 700;
+    color: #161C2D;
+    text-decoration: none;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+.navbar {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+/* Estilo de los enlaces dentro del navbar */
+
+
+.nav-link {
+    font-family: "Baloo 2", sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: black;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    margin-left: 30px; /* Separación entre los enlaces del navbar */
+    margin-right: 100px; /* Separación entre los enlaces del navbar */
+}
+
+
+.nav-link:hover {
+    background-color: #161C2D; /* Cambio de color al hover */
+    color: white;
+
+}
+
+/* Separación manual entre Opiniones y Reportes */
+
+.nav-link.intituciones {
+    margin-right: 50px; /* Ajusta el espacio a tu preferencia */
+}
+
+.nav-link.opiniones {
+    margin-right: 50px; /* Ajusta el espacio a tu preferencia */
+}
+
+.nav-link.reportes {
+    margin-left: 30px; /* Ajusta el espacio a tu preferencia */
+}
+
+.user-dropdown {
+    position: relative;
+    width: 380px; /* Caja más angosta */
+}
+
+.dropdown-toggle {
+    display: flex;
+    align-items: center;
+    border: 1px solid #C5C5C5; /* Borde actualizado */
+    background-color: #F7F7F9; /* Fondo actualizado */
+    padding: 18px 20px;
+    border-radius: 14px;
+    width: 377px;
+    height: 62px;
+    cursor: pointer;
+    font-size: 25px;
+}
+
+
+.arrow-icon {
+    width: 25px;
+    height: 25px;
+    margin-left: 20px; /* Mayor separación entre el ícono de perfil y la flecha */
+    transition: transform 0.3s;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #F7F7F9; /* Fondo del dropdown actualizado */
+    border: 1px solid #C5C5C5; /* Borde del dropdown actualizado */
+    box-shadow: 0px 30px 40px rgba(0, 0, 0, 0.15);
+    border-radius: 14px;
+    width: 320px; /* Caja más angosta */
+    top: 60px;
+    z-index: 10;
+    padding: 18px 16px; /* Aumenta el padding para un aspecto más espacioso */
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    gap: 20px; /* Aumenta el espacio entre avatar y detalles del usuario */
+}
+
+.avatar {
+    width: 45px;
+    height: 45px;
+    margin-right: 20px; /* Mayor separación entre el avatar y el texto */
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-name {
+    color: #000;
+    font-family: "Baloo 2", sans-serif;
+    font-size: 22px; /* Tamaño de texto más grande */
+    line-height: normal;
+    letter-spacing: -0.25px;
+    margin-bottom: 5px; /* Espaciado entre nombre y email */
+}
+
+.user-email {
+    font-family: "Inter", sans-serif;
+    font-size: 18px;
+    color: #999;
+}
+
+.dropdown-item {
+    font-family: "Inter", sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: #000;
+    padding: 16px 20px; /* Aumenta el padding interno de cada ítem */
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Aumenta el espacio entre el ícono y el texto en los ítems */
+}
+
+.dropdown-item:hover {
+    background-color: #f0f0f0;
+}
+
+.show {
+    display: block;
+}
+
+/* Cuando se muestra el dropdown */
+.show .dropdown-content {
+    display: block;
+}
+
+.show .arrow-icon {
+    transform: rotate(180deg);
+}
+
+.institucion-card {
+    width: 427px;
+    height: 278px;
+    background: #FFF;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    transition: transform 0.3s ease;
+    margin: 10px; /* Reduce el margen entre las tarjetas */
+}
+
+.institucion-card:hover {
+    transform: scale(1.05); /* Agranda el contenedor */
+}
+
+.institucion-image {
+    width: 427px;
+    height: 225px;
+    background-size: cover;
+    background-position: center;
+}
+
+.institucion-text {
+    text-align: center;
+    font-family: "Baloo 2", sans-serif;
+    font-size: 20px;
+    color: #161C2D;
+}
+
+.profile-icon, .avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-left: 15px; /* Aumenta la separación entre el nombre y el ícono */
+}
+
