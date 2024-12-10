@@ -1,11 +1,17 @@
 import pymysql
+import os
 
 class DAOInstitucion:
-    def connect(self):
-        return pymysql.connect(host="localhost", user="root", password="", db="heatspots_db")
-
+    def connect_to_db(self):
+        """Establece la conexión a la base de datos."""
+        return pymysql.connect(
+            host=os.getenv("DB_HOST", "db"),
+            user=os.getenv("DB_USER", "root"),
+            password=os.getenv("DB_PASSWORD", ""),
+            db=os.getenv("DB_NAME", "heatspots_db"),
+        )
     def obtener_instituciones(self):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor(pymysql.cursors.DictCursor)
         try:
             cursor.execute("""
@@ -21,7 +27,7 @@ class DAOInstitucion:
 
 
     def agregar_institucion(self, data):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor()
 
         try:
@@ -40,7 +46,7 @@ class DAOInstitucion:
 
 
     def eliminar_institucion(self, id_institucion):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor()
         try:
             cursor.execute("DELETE FROM instituciones WHERE id_institucion=%s", (id_institucion,))
@@ -51,7 +57,7 @@ class DAOInstitucion:
 
     # Obtener institución por ID
     def get_by_id(self, id_institucion):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor(pymysql.cursors.DictCursor)
         try:
             cursor.execute("SELECT * FROM instituciones WHERE id_institucion = %s", (id_institucion,))
@@ -63,7 +69,7 @@ class DAOInstitucion:
             con.close()
 
     def update(self, id_institucion, nombre, descripcion, logo, imagen_universidad):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor()
 
         try:

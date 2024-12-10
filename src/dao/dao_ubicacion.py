@@ -1,11 +1,18 @@
 import pymysql
+import os
 
 class DAOUbicacion:
-    def connect(self):
-        return pymysql.connect(host="localhost", user="root", password="", db="heatspots_db")
+    def connect_to_db(self):
+        """Establece la conexión a la base de datos."""
+        return pymysql.connect(
+            host=os.getenv("DB_HOST", "db"),
+            user=os.getenv("DB_USER", "root"),
+            password=os.getenv("DB_PASSWORD", ""),
+            db=os.getenv("DB_NAME", "heatspots_db"),
+        )
 
     def insert(self, data):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor()
 
         try:
@@ -25,7 +32,7 @@ class DAOUbicacion:
 
 
     def obtener_ubicaciones(self):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor(pymysql.cursors.DictCursor)
 
         query = """
@@ -49,7 +56,7 @@ class DAOUbicacion:
 
     # Actualizar una ubicación por ID
     def update(self, id_ubicacion, data):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor()
 
         try:
@@ -69,7 +76,7 @@ class DAOUbicacion:
 
     # Eliminar una ubicación por ID
     def eliminar(self, id_ubicacion):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor()
 
         try:
@@ -84,7 +91,7 @@ class DAOUbicacion:
             con.close()
 
     def get_by_id(self, id_ubicacion):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor(pymysql.cursors.DictCursor)
 
         try:
@@ -98,7 +105,7 @@ class DAOUbicacion:
 
 
     def get_by_piso(self, id_piso):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor(pymysql.cursors.DictCursor)
         try:
             cursor.execute("""
@@ -117,7 +124,7 @@ class DAOUbicacion:
 
 
     def get_ubicacion_with_sensors(self, id_calefactor):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor(pymysql.cursors.DictCursor)
 
         query = """

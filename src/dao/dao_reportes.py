@@ -1,8 +1,15 @@
 import pymysql
+import os
 
 class DAOReportes:
-    def connect(self):
-        return pymysql.connect(host="localhost", user="root", password="", db="heatspots_db")
+    def connect_to_db(self):
+        """Establece la conexión a la base de datos."""
+        return pymysql.connect(
+            host=os.getenv("DB_HOST", "db"),
+            user=os.getenv("DB_USER", "root"),
+            password=os.getenv("DB_PASSWORD", ""),
+            db=os.getenv("DB_NAME", "heatspots_db"),
+        )
 
     def insert(self, data):
         query = """
@@ -16,7 +23,7 @@ class DAOReportes:
             data['tipo_reporte'],
             data['comentario']
         )
-        connection = self.connect()  # Establece la conexión
+        connection = self.connect_to_db()  # Establece la conexión
         try:
             cursor = connection.cursor()
             cursor.execute(query, params)
@@ -28,7 +35,7 @@ class DAOReportes:
             connection.close()  # Cierra la conexión
 
     def actualizar_estado(self, id_reporte, nuevo_estado):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor()
         try:
             query = "UPDATE reportes SET estado = %s WHERE id_reporte = %s"
@@ -41,7 +48,7 @@ class DAOReportes:
             con.close()
 
     def obtener_reportes_completos(self):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor(pymysql.cursors.DictCursor)
         try:
             query = """
@@ -70,7 +77,7 @@ class DAOReportes:
             con.close()
 
     def eliminar_reporte(self, id_reporte):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor()
         try:
             query = "DELETE FROM reportes WHERE id_reporte = %s"

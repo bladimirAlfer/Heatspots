@@ -1,13 +1,20 @@
 import pymysql
-from werkzeug.security import generate_password_hash  # Asegúrate de importar esto
+import os
+from werkzeug.security import generate_password_hash
 
 class DAOUsuario:
-    def connect(self):
-        return pymysql.connect(host="localhost", user="root", password="", db="heatspots_db")
+    def connect_to_db(self):
+        """Establece la conexión a la base de datos."""
+        return pymysql.connect(
+            host=os.getenv("DB_HOST", "db"),
+            user=os.getenv("DB_USER", "root"),
+            password=os.getenv("DB_PASSWORD", ""),
+            db=os.getenv("DB_NAME", "heatspots_db"),
+        )
 
     # Método insert de DAOUsuario actualizado
     def insert(self, data):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor()
 
         try:
@@ -30,7 +37,7 @@ class DAOUsuario:
 
     # Obtener usuario por email
     def get_by_email(self, email):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor(pymysql.cursors.DictCursor)
         
         try:
@@ -46,7 +53,7 @@ class DAOUsuario:
 
     # Actualizar usuario por email y manejar la actualización de la imagen de perfil
     def update_user(self, email, data):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor()
 
         try:
@@ -81,7 +88,7 @@ class DAOUsuario:
 
     # Eliminar usuario por email
     def delete_user(self, email):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor()
 
         try:
@@ -97,7 +104,7 @@ class DAOUsuario:
 
 
     def get_all(self):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor(pymysql.cursors.DictCursor)  # Asegúrate de usar DictCursor
         try:
             cursor.execute("""

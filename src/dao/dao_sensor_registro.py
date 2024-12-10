@@ -1,20 +1,19 @@
 import pymysql
+import os
 
 class DAOSensorRegistro:
-    def connect(self):
+    def connect_to_db(self):
         """Establece la conexión a la base de datos."""
         return pymysql.connect(
-            host="localhost",
-            user="root",
-            password="",
-            db="heatspots_db",
-            charset="utf8mb4",
-            cursorclass=pymysql.cursors.DictCursor
+            host=os.getenv("DB_HOST", "db"),
+            user=os.getenv("DB_USER", "root"),
+            password=os.getenv("DB_PASSWORD", ""),
+            db=os.getenv("DB_NAME", "heatspots_db"),
         )
 
     # Obtener el último registro de un sensor (temperatura o imagen) por id_calefactor
     def get_ultimo_registro(self, id_calefactor):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor()
 
         try:
@@ -39,7 +38,7 @@ class DAOSensorRegistro:
 
     # Sincronizar datos desde la tabla esp32cam a sensor_registros
     def sincronizar_datos(self, id_sensor):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor()
 
         try:
@@ -67,7 +66,7 @@ class DAOSensorRegistro:
 
     # Obtener todos los registros de un sensor por id_sensor
     def get_registros_por_sensor(self, id_sensor):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor()
 
         try:
@@ -90,7 +89,7 @@ class DAOSensorRegistro:
 
     # Guardar un registro manualmente en sensor_registros
     def guardar_registro(self, id_sensor, temperatura, imagen):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor()
 
         try:

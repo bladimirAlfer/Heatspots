@@ -1,11 +1,18 @@
 import pymysql
+import os
 
 class DAOPiso:
-    def connect(self):
-        return pymysql.connect(host="localhost", user="root", password="", db="heatspots_db")
+    def connect_to_db(self):
+        """Establece la conexión a la base de datos."""
+        return pymysql.connect(
+            host=os.getenv("DB_HOST", "db"),
+            user=os.getenv("DB_USER", "root"),
+            password=os.getenv("DB_PASSWORD", ""),
+            db=os.getenv("DB_NAME", "heatspots_db"),
+        )
 
     def insert(self, data):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor()
 
         try:
@@ -24,7 +31,7 @@ class DAOPiso:
     # Obtener todos los pisos con sensores activos y reportes en estado 'por revisar' o 'en revision'
     # Obtener todos los pisos con sensores activos y reportes
     def obtener_pisos(self):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor(pymysql.cursors.DictCursor)
 
         try:
@@ -50,7 +57,7 @@ class DAOPiso:
 
 
     def update(self, id_piso, nombre, id_institucion, imagen, plano):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor()
 
         try:
@@ -71,7 +78,7 @@ class DAOPiso:
 
     # Eliminar un piso por ID
     def eliminar_piso(self, id_piso):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor()
 
         try:
@@ -87,7 +94,7 @@ class DAOPiso:
 
 # Obtener pisos por ID de institución
     def get_by_institution_id(self, id_institucion):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor(pymysql.cursors.DictCursor)
         try:
             cursor.execute("""
@@ -105,7 +112,7 @@ class DAOPiso:
 
     # Obtener pisos por institución
     def obtener_pisos_por_institucion(self, id_institucion):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor(pymysql.cursors.DictCursor)
         try:
             cursor.execute("SELECT id_piso, nombre FROM pisos WHERE id_institucion = %s", (id_institucion,))
@@ -117,7 +124,7 @@ class DAOPiso:
             con.close()
 
     def get_plano_by_piso(self, id_piso):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor(pymysql.cursors.DictCursor)
 
         try:
@@ -133,7 +140,7 @@ class DAOPiso:
 
 
     def get_by_id(self, id_piso):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor(pymysql.cursors.DictCursor)
 
         try:
@@ -146,7 +153,7 @@ class DAOPiso:
             con.close()
             
     def get_by_piso(self, id_piso):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor(pymysql.cursors.DictCursor)
         try:
             cursor.execute("""

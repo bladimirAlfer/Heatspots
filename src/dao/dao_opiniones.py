@@ -1,11 +1,18 @@
 import pymysql
+import os
 
 class DAOOpinion:
-    def connect(self):
-        return pymysql.connect(host="localhost", user="root", password="", db="heatspots_db")
+    def connect_to_db(self):
+        """Establece la conexión a la base de datos."""
+        return pymysql.connect(
+            host=os.getenv("DB_HOST", "db"),
+            user=os.getenv("DB_USER", "root"),
+            password=os.getenv("DB_PASSWORD", ""),
+            db=os.getenv("DB_NAME", "heatspots_db"),
+        )
 
     def get_all_opiniones(self):
-        connection = self.connect()
+        connection = self.connect_to_db()
         try:
             with connection.cursor(pymysql.cursors.DictCursor) as cursor:
                 query = """
@@ -29,7 +36,7 @@ class DAOOpinion:
             connection.close()
 
     def get_all_for_admin(self):
-        connection = self.connect()
+        connection = self.connect_to_db()
         try:
             with connection.cursor(pymysql.cursors.DictCursor) as cursor:
                 query = """
@@ -53,7 +60,7 @@ class DAOOpinion:
             connection.close()
             
     def insert_opinion(self, opinion):
-        conn = self.connect()
+        conn = self.connect_to_db()
         try:
             with conn.cursor() as cursor:
                 sql = """
@@ -66,7 +73,7 @@ class DAOOpinion:
             conn.close()
 
     def get_opinion_by_id(self, id_opinion):
-        connection = self.connect()
+        connection = self.connect_to_db()
         try:
             with connection.cursor(pymysql.cursors.DictCursor) as cursor:  # Usar DictCursor
                 query = "SELECT * FROM opiniones WHERE id_opinion = %s"
@@ -76,7 +83,7 @@ class DAOOpinion:
             connection.close()
 
     def delete(self, id_opinion):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor()
         try:
             cursor.execute("DELETE FROM opiniones WHERE id_opinion = %s", (id_opinion,))

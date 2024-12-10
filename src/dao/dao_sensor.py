@@ -1,26 +1,24 @@
 import pymysql
-
+import os
 
 class DAOSensores:
     def __init__(self):
         """Inicializa la conexión a la base de datos."""
-        self.connection = self.connect()
+        self.connection = self.connect_to_db()
         self.cursor = self.connection.cursor()
 
-    def connect(self):
+    def connect_to_db(self):
         """Establece la conexión a la base de datos."""
         return pymysql.connect(
-            host="localhost",
-            user="root",
-            password="",
-            db="heatspots_db",
-            charset="utf8mb4",
-            cursorclass=pymysql.cursors.DictCursor,  # Para recibir los resultados como diccionarios
+            host=os.getenv("DB_HOST", "db"),
+            user=os.getenv("DB_USER", "root"),
+            password=os.getenv("DB_PASSWORD", ""),
+            db=os.getenv("DB_NAME", "heatspots_db"),
         )
 
     # Obtener todos los sensores con la última temperatura e imagen
     def obtener_sensores(self):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor(pymysql.cursors.DictCursor)
 
         query = """
@@ -67,7 +65,7 @@ class DAOSensores:
 
     # Insertar sensor
     def insertar_sensor(self, data):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor()
         try:
             cursor.execute("""
@@ -85,7 +83,7 @@ class DAOSensores:
 
     # Actualizar sensor
     def actualizar_sensor(self, id_sensor, data):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor()
         try:
             cursor.execute("""
@@ -106,7 +104,7 @@ class DAOSensores:
 
     # Eliminar sensor
     def eliminar_sensor(self, id_sensor):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor()
         try:
             cursor.execute("DELETE FROM sensores WHERE id_sensor = %s", (id_sensor,))
@@ -121,7 +119,7 @@ class DAOSensores:
 
     # Obtener un sensor por su ID
     def obtener_sensor_por_id(self, id_sensor):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor(pymysql.cursors.DictCursor)
         try:
             cursor.execute("SELECT * FROM sensores WHERE id_sensor = %s", (id_sensor,))

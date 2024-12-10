@@ -1,28 +1,24 @@
 import pymysql
+import os
 
 class DAOCalefactor:
     def __init__(self):
         """Inicializa la conexión a la base de datos."""
-        self.connection = self.connect()
+        self.connection = self.connect_to_db()
         self.cursor = self.connection.cursor()
 
-    def connect(self):
+    def connect_to_db(self):
         """Establece la conexión a la base de datos."""
         return pymysql.connect(
-            host="localhost",
-            user="root",
-            password="",
-            db="heatspots_db",
-            charset="utf8mb4",
-            cursorclass=pymysql.cursors.DictCursor,  # Para recibir los resultados como diccionarios
+            host=os.getenv("DB_HOST", "db"),
+            user=os.getenv("DB_USER", "root"),
+            password=os.getenv("DB_PASSWORD", ""),
+            db=os.getenv("DB_NAME", "heatspots_db"),
         )
-
-
-
 
     # Insertar un nuevo calefactor
     def insert(self, data):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor()
         try:
             cursor.execute("""
@@ -40,7 +36,7 @@ class DAOCalefactor:
 
 
     def obtener_calefactores(self):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor(pymysql.cursors.DictCursor)
         try:
             cursor.execute("""
@@ -61,7 +57,7 @@ class DAOCalefactor:
 
     # Actualizar calefactor
     def update(self, id_calefactor, data):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor()
         try:
             cursor.execute("""
@@ -81,7 +77,7 @@ class DAOCalefactor:
 
     # Eliminar calefactor
     def eliminar_calefactor(self, id_calefactor):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor()
         try:
             cursor.execute("DELETE FROM calefactores WHERE id_calefactor = %s", (id_calefactor,))
@@ -96,7 +92,7 @@ class DAOCalefactor:
 
 
     def get_by_ubicacion(self, id_ubicacion):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor(pymysql.cursors.DictCursor)
 
         try:
@@ -109,7 +105,7 @@ class DAOCalefactor:
             con.close()
 
     def get_by_id(self, id_calefactor):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor(pymysql.cursors.DictCursor)
 
         try:
@@ -122,7 +118,7 @@ class DAOCalefactor:
             con.close()
 
     def obtener_pisos_y_ubicaciones(self):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor(pymysql.cursors.DictCursor)
         try:
             cursor.execute("""
@@ -148,7 +144,7 @@ class DAOCalefactor:
 
 
     def get_by_piso(self, id_piso):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor(pymysql.cursors.DictCursor)
 
         try:
@@ -161,7 +157,7 @@ class DAOCalefactor:
             con.close()
 
     def get_calefactores_by_piso(self, id_piso):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor(pymysql.cursors.DictCursor)
         try:
             cursor.execute("""
@@ -179,7 +175,7 @@ class DAOCalefactor:
 
 
     def obtener_calefactor(self):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor(pymysql.cursors.DictCursor)
 
         query = """
@@ -241,7 +237,7 @@ class DAOCalefactor:
             raise
 
     def get_calefactores_con_ubicacion(self, id_piso):
-        con = self.connect()
+        con = self.connect_to_db()
         cursor = con.cursor(pymysql.cursors.DictCursor)
         
         try:
