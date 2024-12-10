@@ -10,8 +10,8 @@ from dao.dao_usuarios import DAOUsuario
 from dao.dao_institution import DAOInstitucion
 from dao.dao_piso import DAOPiso
 from dao.dao_calefactores import DAOCalefactor
-from dao.dao_transfer import DAOTransfer
 import time
+import pymysql
 
 
 from flask_bcrypt import Bcrypt
@@ -32,7 +32,6 @@ dao_sensor_registro = DAOSensorRegistro()
 dao_sensor = DAOSensores()
 dao_reportes = DAOReportes()
 dao_opiniones = DAOOpinion()
-dao_transfer = DAOTransfer()
 
 
 # Crear administradores
@@ -69,6 +68,22 @@ UPLOAD_FOLDER = 'static/img/uploads/'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+def connect_to_db():
+    for _ in range(10):  # Intentar durante 10 intentos
+        try:
+            connection = pymysql.connect(
+                host="db",
+                user="root",
+                password="",
+                db="heatspots_db"
+            )
+            return connection
+        except pymysql.err.OperationalError as e:
+            print("Esperando conexión a la base de datos...")
+            time.sleep(5)
+    raise Exception("No se pudo conectar a la base de datos después de varios intentos.")
+
+
 # Verificar si el archivo tiene una extensión permitida
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -96,26 +111,6 @@ def add_header(response):
 
 
 # ROUTES
-
-
-
-# Bandera para controlar si la transferencia ya se realizó
-transfer_done = False
-
-@app.before_request
-def transfer_data():
-    """Transfiere automáticamente el registro id=1 de esp32cam a sensor_registros."""
-    dao_transfer.transfer_data()
-
-
-@app.before_request
-def init_data_transfer():
-    global transfer_done
-    if not transfer_done:
-        dao_transfer = DAOTransfer()
-        dao_transfer.transfer_data()
-        print("Transferencia de datos inicial completada.")
-        transfer_done = True  # Evita repetir la transferencia
 
 @app.route('/reset', methods=['GET'])
 def reset_password():
@@ -1155,15 +1150,5 @@ def eliminar_usuario():
     else:
         return redirect(url_for('login'))
 
-@app.route('/transferir_datos', methods=['GET'])
-def transferir_datos():
-    try:
-        dao_transfer.transfer_data()
-        return jsonify({"mensaje": "Datos transferidos con éxito"}), 200
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-
-
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5000)
