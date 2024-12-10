@@ -16,7 +16,7 @@
 
 1. Clonar este repositorio:
     ```bash
-    git clone https://github.com/usuario/heatspots.git
+    git clone https://github.com/bladimirAlfer/heatspots.git
     cd heatspots
     ```
 
