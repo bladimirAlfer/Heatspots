@@ -1,6 +1,6 @@
 flask
 pymysql
 flask-sqlalchemy
-plotly
-dash
-pandas
+flask_bcrypt
+
+
