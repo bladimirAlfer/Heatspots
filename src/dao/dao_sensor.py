@@ -56,7 +56,19 @@ class DAOSensores:
         """
         try:
             cursor.execute(query)
-            return cursor.fetchall()
+            sensores = cursor.fetchall()
+
+            # Procesar cada sensor para manejar el campo `ultima_imagen`
+            for sensor in sensores:
+                if sensor["ultima_imagen"]:  # Si hay datos en `ultima_imagen`
+                    try:
+                        # Decodificar de bytes a string si es necesario
+                        sensor["ultima_imagen"] = sensor["ultima_imagen"].decode("utf-8")
+                    except AttributeError:
+                        # Si ya es un string, no hacemos nada
+                        pass
+
+            return sensores
         except Exception as e:
             print(f"Error al obtener sensores: {e}")
             return None

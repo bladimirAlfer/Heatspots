@@ -18,6 +18,7 @@
                     <th>Piso</th>
                     <th>Institución</th>
                     <th>Última Temp</th>
+                    <th>Última foto</th>
                     <th>Acción</th>
                 </tr>
             </thead>
@@ -44,6 +45,11 @@
                     <td>{{ sensor.piso }}</td>
                     <td>{{ sensor.institucion }}</td>
                     <td>{{ sensor.ultima_temp or 'N/A' }}</td>
+                    <td>
+                        <img src="{{ sensor.ultima_imagen or ''}}" alt="Imagen Base64" width="200">
+
+                    </td>
+                    
                     <td>
                         <img src="{{ url_for('static', filename='img/iconos/edit.png') }}" alt="Editar" class="action-icon" onclick="openEditarSensor('{{ sensor.id_sensor }}')">
                         <img src="{{ url_for('static', filename='img/iconos/delete.png') }}" alt="Eliminar" class="action-icon" onclick="openEliminarSensor('{{ sensor.id_sensor }}')">

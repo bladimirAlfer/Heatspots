@@ -68,6 +68,15 @@ UPLOAD_FOLDER = 'static/img/uploads/'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+
+# Ruta donde se guardarán las imágenes
+UPLOAD_FOLDER = 'static/img/sensores/'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# Verifica si la carpeta existe y la crea si no
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+
 def connect_to_db():
     for _ in range(10):  # Intentar durante 10 intentos
         try:
