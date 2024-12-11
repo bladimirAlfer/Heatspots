@@ -75,6 +75,7 @@ class DAOSensores:
         finally:
             con.close()
 
+
     # Insertar sensor
     def insertar_sensor(self, data):
         con = self.connect_to_db()
